@@ -1,26 +1,21 @@
-"use client"
 
-import { HeroSection } from "@/components/template/simple/sections/hero-section"
-import { InfoSection } from "@/components/template/simple/sections/info-section"
-import { AboutSection } from "@/components/template/simple/sections/about-section"
-import { NewsSection } from "@/components/template/simple/sections/news-section"
-import { CTASection } from "@/components/template/simple/sections/cta-section"
-import { useContent } from "@/hooks/useContent"
-import { SambutanSection } from "@/components/template/simple/sections/sambutan-section"
+"use client";
+import HeroWelcome from "@/components/hero/hero-welcome";
+import MenuCards from "@/components/menu/menu-cards";
+import { useContent } from "@/hooks/useContent";
 
 export default function Home() {
-  const { hero, infoCards, about, cta, infoWellcome } = useContent()
+
+  const { updatedInfoCards, cta } = useContent()
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <main>
-        <HeroSection data={hero} />
-        <SambutanSection data={infoWellcome} />
-        <InfoSection cards={infoCards} />
-        <AboutSection data={about} />
-        <NewsSection />
-        <CTASection data={cta} />
-      </main>
-    </div>
+    <main className="min-h-screen flex flex-col">
+      <HeroWelcome />
+      <div className="relative z-10  py-16">
+        <div className="container mx-auto px-4">
+          <MenuCards cards={updatedInfoCards} cta={cta}/>
+        </div>
+      </div>
+    </main>
   )
 }

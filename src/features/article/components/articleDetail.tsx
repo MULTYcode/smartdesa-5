@@ -12,8 +12,8 @@ interface ArticleDetailProps {
 }
 
 const ArticleDetail: React.FC<ArticleDetailProps> = ({ slug, article }) => {
-    return (        
-        <div className="container mx-auto px-4 py-8 max-w-8xl">
+    return (
+        <div className="container mx-auto px-4 py-8 max-w-8xl mt-20">
             <div className='box-border flex flex-wrap gap-5 justify-between'>
                 <div className='w-full md:w-1/5 lg:w-3/5'>
                     <NewsCard
@@ -32,7 +32,9 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ slug, article }) => {
                     />
                 </div>
 
-                <ArtikelPopuler />
+                <div className='w-full md:w-1/5 lg:w-1/5'>
+                    <ArtikelPopuler />
+                </div>
 
                 <ArtikelIklan />
 

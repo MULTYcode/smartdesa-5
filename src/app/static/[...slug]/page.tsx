@@ -1,7 +1,6 @@
 'use client'
 
 import RichTextContent from '@/components/common/RichTextContent';
-import ArtikelIklan from '@/features/article/components/artikelIklan';
 import ArtikelPopuler from '@/features/article/components/artikelPopuler';
 import StaticPageSkeleton from '@/components/common/skeleton/StaticPageSkeleton';
 import useStaticPage from '@/hooks/useStaticPage';
@@ -24,13 +23,14 @@ export default function PageStatic({ params }: PageProps) {
 
     return (
         <div className="container mx-auto px-4 flex justify-between mb-10 mt-10">
-            <div className="container mx-auto px-4 py-8 max-w-8xl">
+            <div className="container mx-auto px-4 py-8 max-w-8xl mt-10">
                 <div className='box-border flex flex-wrap mx-auto justify-between'>
                     <div className='w-full md:w-1.5/5 lg:w-3/5'>
                         <RichTextContent content={data?.content || ''} />
                     </div>
-                    <ArtikelPopuler />
-                    <ArtikelIklan />
+                    <div className='w-full md:w-1/5 lg:w-1/5'>
+                        <ArtikelPopuler />
+                    </div>
                 </div>
             </div>
         </div>

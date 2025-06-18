@@ -13,8 +13,8 @@ export const MainNav = ({ items }: { items: NavItem[] }) => {
                     <a
                         href={item.child === null ? item.route : "#"}
                         className={`font-medium inline-flex items-center whitespace-nowrap px-3 py-2 rounded-md transition-colors ${item.isActive
-                            ? "text-[#0d6b3f]"
-                            : "text-gray-700 hover:text-[#0d6b3f]"
+                            ? "text-green-100"
+                            : "text-green-100 hover:text-[#e9d970]"
                             }`}
                     >
                         {item.route === "/" && (

@@ -1,12 +1,13 @@
 "use client"
-import type { HeroSection, AboutSection, CTASection, GalleryItem } from "@/types/Simple"
+import type { HeroSection, AboutSection, CTASection, GalleryItem, InfoCard } from "@/types/Simple"
 import useSetting from "./useSettings";
 import useStaticPage from "./useStaticPage";
 
 export function useContent() {
   const { data: logoData } = useSetting(`logo-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
+  const { data: heroData } = useSetting(`hero-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
   const { data: serviceData } = useSetting(`service-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
-  const { data: welcomeData } = useStaticPage({}, `wellcome-message-${process.env.NEXT_PUBLIC_VILLAGE_ID}`);  
+  const { data: welcomeData } = useStaticPage({}, `wellcome-message-${process.env.NEXT_PUBLIC_VILLAGE_ID}`);
   const { data: footerData } = useSetting(`footer-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
   const { data: menuData } = useSetting(`menu-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
   const { data: tourData } = useSetting(`tour-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
@@ -18,7 +19,7 @@ export function useContent() {
   const hero: HeroSection = {
     title: `${logoData?.value?.regionEntity ?? ""}`,
     description: `${logoData?.value?.regionDescription ?? ""}`,
-    image: "https://sekolahgurupemimpin.s3.ap-southeast-1.amazonaws.com/ckeditor/hO0PBGqWYawQlVzkpQKPc8l0aGfdVmMGvdva5L7c.mp4",
+    image: `${heroData?.value?.videoUrl ?? "/images/placeholder.svg"}`,
     buttons: {
       primary: {
         text: "Berita terbaru dari desa",
@@ -31,7 +32,11 @@ export function useContent() {
     },
   }
 
-  const infoCards = serviceData?.value ?? [];
+  const infoCards: InfoCard[] = serviceData?.value ?? [];
+  const updatedInfoCards = infoCards.map(card => ({
+    ...card,    
+    description: `Semua data ${card.title} bisa dilihat disini`,
+  }));
 
   const about: AboutSection = {
     badge: tourData?.value?.title ?? "[Judul wisata belum diatur]",
@@ -70,27 +75,27 @@ export function useContent() {
   }
 
   const footer = {
-    logo: logoData?.value?.imageUrl  ?? "/images/logo/enim.png?height=60&width=60",
-    regionEntity: logoData?.value?.regionEntity  ?? "",
-    regionDescription: logoData?.value?.regionDescription  ?? "",
+    logo: logoData?.value?.imageUrl ?? "/images/logo/enim.png?height=60&width=60",
+    regionEntity: logoData?.value?.regionEntity ?? "",
+    regionDescription: logoData?.value?.regionDescription ?? "",
     address: footerData?.value?.contactUs?.address ?? "",
     phone: footerData?.value?.contactUs?.phone ?? "",
     email: footerData?.value?.contactUs?.email ?? "",
     socialMedia: footerData?.value?.socialMedia ?? [],
     mainNav: serviceData?.value ?? [],
-    quickLinks: menuData?.value ?? [],    
+    quickLinks: menuData?.value ?? [],
   }
 
   const header = {
-    logo: logoData?.value?.imageUrl  ?? "/images/logo/enim.png",
-    regionEntity: logoData?.value?.regionEntity  ?? "",
-    regionDescription: logoData?.value?.regionDescription  ?? "",
-    menus: menuData?.value ?? [],    
+    logo: logoData?.value?.imageUrl ?? "/images/logo/enim.png",
+    regionEntity: logoData?.value?.regionEntity ?? "",
+    regionDescription: logoData?.value?.regionDescription ?? "",
+    menus: menuData?.value ?? [],
   }
 
   return {
     hero,
-    infoCards,
+    updatedInfoCards,
     about,
     gallery,
     cta,

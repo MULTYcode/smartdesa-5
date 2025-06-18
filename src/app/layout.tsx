@@ -1,52 +1,39 @@
 "use client"
+import type React from "react"
+import "@/app/globals.css"
+// import type { Metadata } from "next"
+import { Inter, Playfair_Display, Dancing_Script } from "next/font/google"
+import { ThemeProvider } from "@/context/ThemeContext"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { useState } from "react"
+import LayoutInner from "./layoutInner"
 
-import { Geist, Geist_Mono } from "next/font/google";
-import './globals.css';
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" })
+const dancingScript = Dancing_Script({ subsets: ["latin"], variable: "--font-script" })
 
-import { SidebarProvider } from '@/context/SidebarContext';
-import { ThemeProvider } from '@/context/ThemeContext';
-
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { useState } from 'react';
-import Chatbot from '@/components/chatbot/chatbot';
-import LayoutInner from './layoutInner';
-
-// const outfit = Outfit({
-//   subsets: ['latin'],
-// });
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// export const metadata: Metadata = {
+//   title: "Green Valley Village - Official Website",
+//   description: "Discover the natural beauty of our eco-friendly village nestled in the lush green valley",
+// }
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const [queryClient] = useState(() => new QueryClient());  
+}: {
+  children: React.ReactNode
+}) {
+
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.variable} ${playfair.variable} ${dancingScript.variable} font-sans`}>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider>
-            <SidebarProvider>
-              <LayoutInner>{children}</LayoutInner>              
-              {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-              
-            </SidebarProvider>
+            <LayoutInner>{children}</LayoutInner>
           </ThemeProvider>
         </QueryClientProvider>
-        <Chatbot />
       </body>
     </html>
-  );
+  )
 }

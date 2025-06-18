@@ -1,7 +1,7 @@
 'use client';
 
-import { Footer } from '@/components/template/simple/layout/Footer';
-import { Header } from '@/components/template/simple/layout/Header';
+import { Footer } from '@/components/footer/footer';
+import Header from '@/components/header/header';
 import { useContent } from '@/hooks/useContent';
 
 export default function LayoutInner({ children }: { children: React.ReactNode }) {
