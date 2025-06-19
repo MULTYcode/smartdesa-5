@@ -18,11 +18,18 @@ export default function HeroWelcome() {
         }
     }, [])
 
+    const [isClient, setIsClient] = useState(false);
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    if (!isClient) return null;
+
     return (
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
             {/* Video Background */}
             <div className="absolute inset-0 w-full h-full">
-                <div className="absolute inset-0 bg-green-950/50 z-10" />                
+                <div className="absolute inset-0 bg-green-950/50 z-10" />
                 <video ref={videoRef} autoPlay muted loop playsInline className="absolute w-full h-full object-cover">
                     <source src={hero.image ?? '/images/placeholder.svg'} type="video/mp4" />
                     Your browser does not support the video tag.

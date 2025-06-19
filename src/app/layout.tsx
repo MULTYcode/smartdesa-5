@@ -2,15 +2,15 @@
 import type React from "react"
 import "@/app/globals.css"
 // import type { Metadata } from "next"
-import { Inter, Playfair_Display, Dancing_Script } from "next/font/google"
+// import { Inter, Playfair_Display, Dancing_Script } from "next/font/google"
 import { ThemeProvider } from "@/context/ThemeContext"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { useState } from "react"
 import LayoutInner from "./layoutInner"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" })
-const dancingScript = Dancing_Script({ subsets: ["latin"], variable: "--font-script" })
+// const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
+// const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" })
+// const dancingScript = Dancing_Script({ subsets: ["latin"], variable: "--font-script" })
 
 // export const metadata: Metadata = {
 //   title: "Green Valley Village - Official Website",
@@ -27,7 +27,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${playfair.variable} ${dancingScript.variable} font-sans`}>
+      <body>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider>
             <LayoutInner>{children}</LayoutInner>

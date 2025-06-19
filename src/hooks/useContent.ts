@@ -76,11 +76,11 @@ export function useContent() {
 
   const footer = {
     logo: logoData?.value?.imageUrl ?? "/images/logo/enim.png?height=60&width=60",
-    regionEntity: logoData?.value?.regionEntity ?? "",
-    regionDescription: logoData?.value?.regionDescription ?? "",
-    address: footerData?.value?.contactUs?.address ?? "",
-    phone: footerData?.value?.contactUs?.phone ?? "",
-    email: footerData?.value?.contactUs?.email ?? "",
+    regionEntity: logoData?.value?.regionEntity ?? "[nama desa belum diatur]",
+    regionDescription: logoData?.value?.regionDescription ?? "[keterangan belum diatur]",
+    address: footerData?.value?.contactUs?.address ?? "[alamat belum diatur]",
+    phone: footerData?.value?.contactUs?.phone ?? "[phone belum diatur]",
+    email: footerData?.value?.contactUs?.email ?? "[email belum diatur]",
     socialMedia: footerData?.value?.socialMedia ?? [],
     mainNav: serviceData?.value ?? [],
     quickLinks: menuData?.value ?? [],
@@ -88,8 +88,8 @@ export function useContent() {
 
   const header = {
     logo: logoData?.value?.imageUrl ?? "/images/logo/enim.png",
-    regionEntity: logoData?.value?.regionEntity ?? "",
-    regionDescription: logoData?.value?.regionDescription ?? "",
+    regionEntity: logoData?.value?.regionEntity ?? "[Nama desa belum diatur]",
+    regionDescription: logoData?.value?.regionDescription ?? "[Keterangan desa belum diatur]",
     menus: menuData?.value ?? [],
   }
 

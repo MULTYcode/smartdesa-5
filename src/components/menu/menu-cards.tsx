@@ -28,6 +28,21 @@ export default function MenuCards({ cards, cta }: InfoSectionProps) {
     }
   }
 
+  function CardMenuSkeleton() {
+    return <Card className="h-full bg-white/90 backdrop-blur-sm border-gray-200 animate-pulse">
+      <CardHeader>
+        <div className="flex items-center mb-3">
+          <div className="h-6 w-6 rounded-full mr-3 bg-gray-300" />
+          <div className="h-6 w-40 bg-gray-200 rounded-md" />
+        </div>
+        <div className="h-4 w-3/4 bg-gray-100 rounded-md" />
+      </CardHeader>
+      <CardFooter>
+        <div className="h-10 w-full bg-gray-300 rounded-md" />
+      </CardFooter>
+    </Card>
+  }
+
   return (
     <div>
       <motion.div
@@ -44,6 +59,14 @@ export default function MenuCards({ cards, cta }: InfoSectionProps) {
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {
+
+          cards.length <= 0 && (
+            [...Array(3)].map((_, index) => (              
+                <CardMenuSkeleton key={index} />              
+            ))
+          )
+        }
         {cards.map((item, index) => (
           <motion.div
             key={item.id}
@@ -96,14 +119,32 @@ export default function MenuCards({ cards, cta }: InfoSectionProps) {
               </CardContent> */}
           <CardFooter>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <CustomButton variant="secondary" className="bg-white text-[#0d6b3f] hover:bg-gray-100" onClick={() => window.open(cta.buttons.primary.url, '_blank')}>
-                <Phone className="h-4 w-4 mr-2" />
-                Hubungi kami
-              </CustomButton>
-              <CustomButton variant="ghost" className="bg-white text-[#0d6b3f] hover:bg-gray-100" onClick={() => window.open(cta.buttons.secondary.url, '_blank')}>
-                <Mail className="h-4 w-4 mr-2" />
-                Kirim pesan
-              </CustomButton>
+              {
+                cta.buttons.primary.url.includes("undefined") ? (
+                  <div className="inline-flex items-center px-4 py-2 bg-gray-200 text-transparent rounded-md animate-pulse">
+                    <div className="h-4 w-4 bg-gray-300 rounded mr-2" />
+                    <div className="h-4 w-24 bg-gray-300 rounded" />
+                  </div>
+                ) : (
+                  <CustomButton variant="secondary" className="bg-white text-[#0d6b3f] hover:bg-gray-100" onClick={() => window.open(cta.buttons.primary.url, '_blank')}>
+                    <Phone className="h-4 w-4 mr-2" />
+                    Hubungi kami
+                  </CustomButton>
+                )
+              }
+              {                
+                cta.buttons.primary.url.includes("undefined") ? (
+                  <div className="inline-flex items-center px-4 py-2 bg-gray-200 text-transparent rounded-md animate-pulse">
+                    <div className="h-4 w-4 bg-gray-300 rounded mr-2" />
+                    <div className="h-4 w-24 bg-gray-300 rounded" />
+                  </div>
+                ) : (
+                  <CustomButton variant="secondary" className="bg-white text-[#0d6b3f] hover:bg-gray-100" onClick={() => window.open(cta.buttons.secondary.url, '_blank')}>
+                    <Mail className="h-4 w-4 mr-2" />
+                    Kirim pesan
+                  </CustomButton>
+                )
+              }
             </div>
             {/* <Link href="#" className="w-full">
                   <Button className="w-full bg-green-700 text-green-100 hover:bg-green-800 transition-colors duration-300">
