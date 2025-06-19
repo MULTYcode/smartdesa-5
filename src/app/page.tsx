@@ -13,7 +13,7 @@ export default function Home() {
       <HeroWelcome />
       <div className="relative z-10  py-16">
         <div className="container mx-auto px-4">
-          <MenuCards cards={updatedInfoCards} cta={cta}/>
+          <MenuCards cards={updatedInfoCards} cta={cta} />
         </div>
       </div>
     </main>
