@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 import { Leaf } from "lucide-react"
-import Image from "next/image"
+// import Image from "next/image"
 import { useContent } from "@/hooks/useContent"
 import RichTextContent from "../common/RichTextContent"
 
@@ -123,7 +123,7 @@ export default function HeroWelcome() {
                             </div>
 
                             {/* Village Head Photo */}
-                            <div className="lg:w-80 w-full flex justify-center lg:justify-end mb-5">
+                            {/* <div className="lg:w-80 w-full flex justify-center lg:justify-end mb-5">
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     animate={{ opacity: 1, scale: 1 }}
@@ -141,19 +141,17 @@ export default function HeroWelcome() {
                                         />
                                     </div>
 
-                                    {/* Decorative frame elements */}
                                     <div className="absolute -top-3 -left-3 w-8 h-8 border-t-3 border-l-3 border-green-300/40 rounded-tl-lg"></div>
                                     <div className="absolute -top-3 -right-3 w-8 h-8 border-t-3 border-r-3 border-green-300/40 rounded-tr-lg"></div>
                                     <div className="absolute -bottom-3 -left-3 w-8 h-8 border-b-3 border-l-3 border-green-300/40 rounded-bl-lg"></div>
                                     <div className="absolute -bottom-3 -right-3 w-8 h-8 border-b-3 border-r-3 border-green-300/40 rounded-br-lg"></div>
 
-                                    {/* Photo caption */}
                                     <div className="absolute -bottom-12 left-0 right-0 text-center">
                                         <p className="text-green-200 text-base font-medium">Teguh Priyono</p>
                                         <p className="text-green-300 text-sm">Masa Bakti 2025 - 2028</p>
                                     </div>
                                 </motion.div>
-                            </div>
+                            </div> */}
                         </div>
                     </motion.div>
 
