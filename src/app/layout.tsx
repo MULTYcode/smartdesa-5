@@ -1,21 +1,22 @@
-"use client"
 import type React from "react"
 import "@/app/globals.css"
-// import type { Metadata } from "next"
-// import { Inter, Playfair_Display, Dancing_Script } from "next/font/google"
-import { ThemeProvider } from "@/context/ThemeContext"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { useState } from "react"
-import LayoutInner from "./layoutInner"
+import { Geist, Geist_Mono } from "next/font/google";
+import SettingService from "@/shared/services/setting.service"
+import HolyLoader from "holy-loader";
+import RootLayoutClient from "./rootLayout";
+import Script from "next/script";
 
-// const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-// const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" })
-// const dancingScript = Dancing_Script({ subsets: ["latin"], variable: "--font-script" })
+export const metadata = await generateMetadata(); 
 
-// export const metadata: Metadata = {
-//   title: "Green Valley Village - Official Website",
-//   description: "Discover the natural beauty of our eco-friendly village nestled in the lush green valley",
-// }
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export default function RootLayout({
   children,
@@ -23,17 +24,38 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
-  const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider>
-            <LayoutInner>{children}</LayoutInner>
-          </ThemeProvider>
-        </QueryClientProvider>
+     <html lang="en">
+      <HolyLoader/>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <RootLayoutClient>{children}</RootLayoutClient>
+         <Script
+            src="https://website-widgets.pages.dev/dist/sienna.min.js"
+            strategy="afterInteractive"
+          />
       </body>
     </html>
   )
+}
+
+async function generateMetadata()  {
+  try {
+    const logoResponse = await SettingService.getSetting (`logo-${process.env.NEXT_PUBLIC_VILLAGE_ID}`)
+    const heroResponse = await SettingService.getSetting (`hero-${process.env.NEXT_PUBLIC_VILLAGE_ID}`)
+    return {
+      title: logoResponse?.data?.value?.regionEntity || "Pemerintah Kabupaten Muara Enim",
+      description: heroResponse?.data?.value?.title + heroResponse?.data?.value?.description || "Pemerintah Kabupaten Muara Enim",
+      icons: {
+        icon: [
+          new URL(logoResponse?.data?.value?.imageUrl)
+        ]
+      },
+    }
+  } catch {
+     return {
+      title: process.env.NEXT_PUBLIC_VILLAGE_NAME || "Pemerintah Kabupaten Muara Enim",
+      description: "Pemerintah Kabupaten Muara Enim",
+    }
+  }
 }

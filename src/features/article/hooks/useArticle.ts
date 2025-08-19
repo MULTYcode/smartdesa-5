@@ -10,6 +10,7 @@ function useArticle(params: Record<string, string | number> = {}, categoryId: nu
         fetchNextPage,
         hasNextPage,
         isFetching,
+        isFetchingNextPage,
         refetch,
       } = useInfiniteQuery<ListArticle, Error>({
         initialPageParam: null,
@@ -42,6 +43,7 @@ function useArticle(params: Record<string, string | number> = {}, categoryId: nu
       fetchNextPage,
       refetch,
       isError,
+      isFetchingNextPage
     };
   }
   

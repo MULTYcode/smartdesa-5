@@ -70,13 +70,6 @@ export default function Header() {
             >
               Beranda
             </Link>
-            {/* <Link
-              href="#features"
-              className="text-gray-700 hover:text-blue-600 font-medium"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Fitur
-            </Link> */}
             <Link
               href="#how-it-works"
               className="text-gray-700 hover:text-blue-600 font-medium"

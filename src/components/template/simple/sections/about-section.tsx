@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { CustomButton } from "@/components/ui/simple/CustomButton"
 import { ChevronRight } from "lucide-react"
-import type { AboutSection as AboutSectionType } from "@/types/Simple"
+import type { TourSection as AboutSectionType } from "@/types/Simple"
 import { useRouter } from "next/navigation"
 
 interface AboutSectionProps {
@@ -17,12 +17,12 @@ export function AboutSection({ data }: AboutSectionProps) {
   };
 
   return (
-    <section className="py-16">
+    <section className="py-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
             <div className="inline-block px-3 py-1 bg-[#0d6b3f]/10 text-[#0d6b3f] font-medium rounded-full text-sm mb-4">
-              {data.badge}
+              {data.description}
             </div>
             <h2 className="text-3xl font-bold text-gray-800 mb-6">{data.title}</h2>
             {data.description.map((paragraph, index) => (

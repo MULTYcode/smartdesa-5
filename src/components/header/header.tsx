@@ -1,91 +1,116 @@
 "use client"
 
-import Link from "next/link"
-import { Key } from "lucide-react"
-import Image from "next/image"
-import { MainNav } from "../template/simple/sections/mainnav-section"
-import { MobileNav } from "../template/simple/sections/mobilnav-section"
-import { CustomButton } from "../ui/simple/CustomButton"
+import { Mail, Phone } from "lucide-react"
+import Sosmed from "../common/sosmed"
+import { MainNav } from "../navigation/main-nav"
+import Logo from "../shared/logo"
+
+ const Skeleton = ({ className }: { className: string }) => (
+    <div className={`animate-pulse bg-white/20 rounded ${className}`} />
+  )
 
 interface HeaderProps {
-  data?: {
-    logo: string,
-    regionEntity: string,
-    regionDescription: string,
-    menus: [],
-  }
+  data?:{
+      logo: string,
+      regionEntity: string,
+      regionDescription: string,
+      address: string,
+      phone: string,
+      email: string,
+      socialMedia: [],
+      mainNav: [],
+      menus: []
+    }
 }
 
 export default function Header({ data }: HeaderProps) {
 
   const mainNav = data?.menus ?? []
-  const hasBrackets = /[\[\]]/.test(data?.regionEntity ?? '');
 
   return (
-    <header className="w-full village-header bg-green-900 fixed top-0 z-50">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-green-100 font-bold text-xl flex items-center">
-          <div className="flex items-center space-x-3">
-
+    <header className="w-full village-header fixed top-0 z-50">
+      <div className="hidden md:flex justify-center bg-[#F8F6F6]">
+        <div className="px-6 py-2 sm:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl w-full flex items-center justify-between">
+           <div className="flex items-center space-x-3">
+             <Logo/>
+            </div>
             {
-              !data?.regionEntity || hasBrackets ? (
-                <>
-                  <div>
-                    <div className="h-10 w-10 bg-gray-300 animate-pulse rounded"></div>
+              !data?.socialMedia ? (
+                <div className="bg-[#0d6b3f] text-white py-2 flex justify-center w-full">
+                  <div className="px-0 w-full max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl flex-col sm:flex-row gap-2 flex justify-between items-start sm:items-center">
+                    {/* Left Side - Phone & Email */}
+                    <div className="flex flex-col sm:flex-row  items-start sm:items-center gap-2 space-x-4 text-sm">
+                      {/* Phone */}
+                      <div className="flex items-center space-x-1">
+                        <Skeleton className="h-4 w-4 rounded-full bg-green-800" />
+                        <Skeleton className="h-4 w-24 bg-green-800" />
+                      </div>
+                      {/* Email */}
+                      <div className="flex items-center space-x-1">
+                        <Skeleton className="h-4 w-4 rounded-full bg-green-800" />
+                        <Skeleton className="h-4 w-36 bg-green-800" />
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      <Skeleton className="h-5 w-5 rounded-full bg-green-800" />
+                      <Skeleton className="h-5 w-5 rounded-full bg-green-800" />
+                      <Skeleton className="h-5 w-5 rounded-full bg-green-800" />
+                    </div>
                   </div>
-                  <div>
-                    <div className="h-6 w-40 bg-gray-300 animate-pulse rounded"></div>
-                  </div>
-                </>
+                </div>
               ) : (
-                <>
-                  <Image
-                    className="h-1"
-                    src={data?.logo ?? '/images/logo/enim.png'}
-                    alt="Logo"
-                    width={500}
-                    height={300}
-                    style={{
-                      width: "38px",
-                      height: "auto",
-                    }}
-                  />
-                  <div>
-                    <h1 className="font-bold text-xl text-green-100">{data?.regionEntity}</h1>
+                <div className=" text-black flex justify-end">
+                  <div className="w-full px-6 sm:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl flex-col sm:flex-row gap-4 lg:gap-2 flex justify-between items-start sm:items-center">
+                    <div className="flex flex-col lg:flex-row  items-start lg:items-center space-x-4 text-sm">
+                      <div className="flex items-center">
+                        <Phone className="h-4 w-4 mr-1" />
+                        <span>{data?.phone}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Mail className="h-4 w-4 mr-1" />
+                        <span>{data?.email}</span>
+                      </div>
+                    </div>
+                    <Sosmed />
                   </div>
-                </>
+                </div>
               )
             }
-          </div>
-        </Link>
+        </div>
+      </div>
+      <div className="flex justify-center py-2 bg-[#2A363B]">
+        <div className="px-6 sm:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl w-full flex items-center justify-between md:justify-end lg:justify-center">
+         <div className="flex md:hidden items-center space-x-3">
+              <Logo isDark/>
+            </div>
 
-        {
-          mainNav.length === 0 || mainNav.length <= 3 ? (
-            <div className="flex items-center justify-between space-x-4">
-              {/* MainNav Placeholder */}
-              <div className="hidden md:flex space-x-4">
-                <div className="h-4 w-16 bg-gray-300 animate-pulse rounded"></div>
-                <div className="h-4 w-20 bg-gray-300 animate-pulse rounded"></div>
-                <div className="h-4 w-12 bg-gray-300 animate-pulse rounded"></div>
+          <div className="flex items-center justify-between">
+                   <MainNav menuData={(mainNav?.length > 0) ? mainNav
+                              :  [
+                                  {
+                                      "order": 1,
+                                      "title": "Home",
+                                      "route": "/",
+                                      "staticPage": null,
+                                      "child": null
+                                  },
+                                  {
+                                      "order": 2,
+                                      "title": "Artikel",
+                                      "route": "/article",
+                                      "staticPage": null,
+                                      "child": null
+                                  },
+                                  {
+                                      "order": 3,
+                                      "title": "Wisata",
+                                      "route": "/tour",
+                                      "staticPage": null,
+                                      "child": null
+                                  }
+                              ]}  />
               </div>
-
-              {/* MobileNav Icon Placeholder */}
-              <div className="md:hidden h-6 w-6 bg-gray-300 animate-pulse rounded"></div>
-
-              {/* CustomButton Placeholder */}
-              <div className="h-8 w-8 bg-gray-300 animate-pulse rounded-full"></div>
-            </div>
-          ) : (
-            <div className="flex items-center justify-between">
-              <MainNav items={mainNav} />
-              <MobileNav items={mainNav} />
-              <CustomButton variant="primary" size="icon" className="border-gray-300" onClick={() => window.open('http://localhost:3003', '_blank')}>
-                <Key className="h-4 w-4" />
-              </CustomButton>
-            </div>
-          )
-        }
-
+        </div>
       </div>
     </header>
   )

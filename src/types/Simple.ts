@@ -95,8 +95,8 @@ export interface HeroSection {
 }
 
 // About Section Types
-export interface AboutSection {
-  badge: string
+export interface TourSection {
+  subTittle: string
   title: string
   description: string[]
   image: string

@@ -19,7 +19,7 @@ export default function TrackingHero() {
   }
 
   return (
-    <section className="bg-gradient-to-b from-blue-50 to-white py-16 md:py-24">
+    <section className="bg-gradient-to-b from-blue-50 to-white py-8 md:py-24">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-10">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">

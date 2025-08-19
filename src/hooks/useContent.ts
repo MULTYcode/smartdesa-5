@@ -1,28 +1,31 @@
 "use client"
-import type { HeroSection, AboutSection, CTASection, GalleryItem, InfoCard } from "@/types/Simple"
+import type { HeroSection, TourSection, CTASection, GalleryItem, InfoCard } from "@/types/Simple"
 import useSetting from "./useSettings";
 import useStaticPage from "./useStaticPage";
 
 export function useContent() {
   const { data: logoData } = useSetting(`logo-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
-  const { data: heroData } = useSetting(`hero-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
   const { data: serviceData } = useSetting(`service-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
-  const { data: welcomeData } = useStaticPage({}, `wellcome-message-${process.env.NEXT_PUBLIC_VILLAGE_ID}`);
+  const { data: appData } = useSetting(`app-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
+  const { data: welcomeData } = useStaticPage({}, `wellcome-message-${process.env.NEXT_PUBLIC_VILLAGE_ID}`); 
+  const { data: programData } = useStaticPage({}, `village-program-${process.env.NEXT_PUBLIC_VILLAGE_ID}`); 
   const { data: footerData } = useSetting(`footer-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
   const { data: menuData } = useSetting(`menu-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
   const { data: tourData } = useSetting(`tour-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
+  const { data: articleData } = useSetting(`article-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
+  const { data: heroData } = useSetting(`hero-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
 
-  const email = logoData?.value?.contactUs?.email || "desaku@example.com"
+  const email = footerData?.value?.contactUs?.email || "desaku@example.com"
   const subject = encodeURIComponent("Pesan dari pengunjung")
   const body = encodeURIComponent("Halo, saya ingin mengirim pesan kepada Desa.")
 
   const hero: HeroSection = {
-    title: `${logoData?.value?.regionEntity ?? ""}`,
-    description: `${logoData?.value?.regionDescription ?? ""}`,
+    title: `${heroData?.value?.title ?? ""}`,
+    description: `${heroData?.value?.description ?? ""}`,
     image: `${heroData?.value?.videoUrl ?? "/images/placeholder.svg"}`,
     buttons: {
       primary: {
-        text: "Berita terbaru dari desa",
+        text: "Berita terbaru",
         url: "/profil",
       },
       secondary: {
@@ -35,12 +38,12 @@ export function useContent() {
   const infoCards: InfoCard[] = serviceData?.value ?? [];
   const updatedInfoCards = infoCards.map(card => ({
     ...card,    
-    description: `Semua data ${card.title} bisa dilihat disini`,
+    description: `Semua informasi tentang ${card.title} dapat kamu lihat disini`,
   }));
 
-  const about: AboutSection = {
-    badge: tourData?.value?.title ?? "[Judul wisata belum diatur]",
-    title: tourData?.value?.subTitle ?? "[sub title wisata belum diatur]",
+  const about: TourSection = {
+    title: tourData?.value?.title ?? "[Judul wisata belum diatur]",
+    subTittle: tourData?.value?.subTitle ?? "[Sub judul wisata belum diatur]",
     description: [tourData?.value?.description ?? "[Deskripsi wisata belum diatur]"],
     image: tourData?.value?.imageUrl ?? "/images/placeholder.svg",
     button: {
@@ -49,7 +52,13 @@ export function useContent() {
     },
   }
 
+  const service = {
+    title: appData?.value?.title ?? "[judul layanan belum diatur]",
+    subTittle: appData?.value?.subTitle ?? "[Sub judul layanan belum diatur]"
+  }
+
   const infoWellcome: string = welcomeData?.content ?? "[Kata sambutan tidak tersedia]";
+  const infoProgram: string = programData?.content ?? "[Program tidak tersedia]";
 
   const gallery: GalleryItem[] = Array.from({ length: 8 }, (_, i) => ({
     id: String(i + 1),
@@ -58,20 +67,25 @@ export function useContent() {
   }))
 
   const cta: CTASection = {
-    title: "Hubungi Kami",
-    description: `Untuk informasi lebih lanjut tentang Desa ${logoData?.value?.regionEntity ?? ""} atau layanan yang tersedia, silakan hubungi kami melalui kontak di bawah ini.`,
+    title: "Hubungi kami",
+    description: `Untuk informasi lebih lanjut tentang ${logoData?.value?.regionEntity?.toLowerCase?.() ?? "kami"} atau layanan yang tersedia, silakan hubungi kami melalui kontak di bawah ini.`,
     buttons: {
       primary: {
-        text: "Hubungi Kami",
+        text: "hubungi kami",
         url: `https://wa.me/62${footerData?.value?.contactUs?.phone}?text=Halo%2C%20saya%20ingin%20bertanya%20mengenai%20layanan%20desa`,
         icon: "phone",
       },
       secondary: {
-        text: "Kirim Pesan",
+        text: "kirim pesan",
         url: `mailto:${email}?subject=${subject}&body=${body}`,
         icon: "mail",
       },
     },
+  }
+
+  const article = {
+    title: articleData?.value?.title ?? "[Judul artikel belum diatur]",
+    imageUrl: articleData?.value?.imageUrl ?? "/images/placeholder.svg",
   }
 
   const footer = {
@@ -83,24 +97,28 @@ export function useContent() {
     email: footerData?.value?.contactUs?.email ?? "[email belum diatur]",
     socialMedia: footerData?.value?.socialMedia ?? [],
     mainNav: serviceData?.value ?? [],
-    quickLinks: menuData?.value ?? [],
+    menus: menuData?.value ?? [],
   }
 
   const header = {
-    logo: logoData?.value?.imageUrl ?? "/images/logo/enim.png",
-    regionEntity: logoData?.value?.regionEntity ?? "[Nama desa belum diatur]",
-    regionDescription: logoData?.value?.regionDescription ?? "[Keterangan desa belum diatur]",
-    menus: menuData?.value ?? [],
+    logo: logoData?.value?.imageUrl  ?? "/images/logo/enim.png",
+    regionEntity: logoData?.value?.regionEntity  ?? "",
+    regionDescription: logoData?.value?.regionDescription  ?? "",
+    menus: menuData?.value ?? [],    
   }
 
   return {
     hero,
-    updatedInfoCards,
+    updatedInfoCards, 
+    infoCards,
     about,
     gallery,
     cta,
     infoWellcome,
+    infoProgram,
     footer,
-    header
+    header,
+    article,
+    service
   }
 }

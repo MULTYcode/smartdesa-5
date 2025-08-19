@@ -1,4 +1,5 @@
 import type React from "react"
+import './richTextContent.css';
 
 interface RichTextContentProps {
   content: string

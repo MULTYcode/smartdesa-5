@@ -5,13 +5,15 @@ import Header from '@/components/header/header';
 import { useContent } from '@/hooks/useContent';
 
 export default function LayoutInner({ children }: { children: React.ReactNode }) {
-  const { footer, header } = useContent();
+  const { footer } = useContent();
 
   return (
     <>
-      <Header data={header} />
-      {children}
-      <Footer data={footer} />
+       <Header data={footer} />
+          <div className='mt-15 md:mt-28'>
+            {children}
+          </div>
+        <Footer data={footer} />
     </>
   );
 }

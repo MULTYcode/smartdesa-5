@@ -20,7 +20,7 @@ export function CTASection({ data }: CTASectionProps) {
   }
 
   return (
-    <section className="py-16 bg-[#0d6b3f]">
+    <section className="py-8 bg-[#0d6b3f]">
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl font-bold text-white mb-6">{data.title}</h2>
         <p className="text-white/90 max-w-2xl mx-auto mb-8">{data.description}</p>

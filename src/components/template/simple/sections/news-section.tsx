@@ -7,7 +7,7 @@ export function NewsSection() {
   const { data } = useArticle({ "page_size": 6 });
 
   return (
-    <section id="article" className="py-16 bg-gray-50">
+    <section id="article" className="py-8 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-12">
           <div>
