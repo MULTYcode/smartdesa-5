@@ -128,9 +128,9 @@ export default function Home() {
                         tabIndex={1}
                         href={`/tour/${card?.slug ?? ""}`}
                         key={card.id}
-                        className="col-span-12 flex flex-row overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-xl dark:bg-gray-800 md:col-span-6 xl:col-span-4"
+                        className="col-span-12 flex flex-col sm:flex-row overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-xl dark:bg-gray-800 md:col-span-6 xl:col-span-4"
                       >
-                        <div className="relative w-1/3 flex-shrink-0">
+                        <div className="relative w-full sm:w-1/3 flex-shrink-0">
                           <Image
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                             src={card?.thumbnail || "/images/unavailable-image.png"}

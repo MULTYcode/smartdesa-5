@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         hostname: 'sekolahgurupemimpin.s3.ap-southeast-1.amazonaws.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'api-minio.muaraenimkab.go.id',
+        pathname: '/**',
+      },
     ],
   },
   webpack(config) {

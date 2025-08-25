@@ -51,13 +51,13 @@ export function TourSection({ data }: TourSectionProps) {
     <section className="py-8 flex justify-center">
       <div className="w-full px-6 sm:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 gap-x-10 items-center">
-          <motion.div
-            className="relative aspect-[3/2]"
+            <motion.div
+            className="relative w-xl max-w-full aspect-[3/2]"
             variants={imageVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-          >
+            >
             <Image
               src={data.image || "/placeholder.svg"}
               alt={data.title || "Tour Image"}
@@ -65,7 +65,7 @@ export function TourSection({ data }: TourSectionProps) {
               className="object-cover object-center rounded-lg"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
-          </motion.div>
+            </motion.div>
           <motion.div
             variants={textVariants}
             initial="hidden"

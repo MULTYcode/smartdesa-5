@@ -24,7 +24,7 @@ export function NewsCard({ title, excerpt, date, readTime, image, slug, classNam
   return (
    <Link 
               href={`/article/${slug}`} 
-              className="inline-flex items-center text-[#CF4647] font-medium hover:text-red-700 transition-colors duration-300"
+              className="items-center text-[#CF4647] font-medium hover:text-red-700 transition-colors duration-300"
             >
 
               <CustomCard className={cn(

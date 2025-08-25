@@ -22,7 +22,7 @@ export default function Home() {
     <main className="justify-center items-center min-h-screen flex flex-col">
       <HeroWelcome />
       <div className="flex w-full flex-col items-center gap-4 px-6 sm:px-0 py-4 ">
-        <div className="relative w-full px-6 sm:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl  flex items-center rounded-xl border border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-700">
+        <div className="relative w-full px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl  flex items-center rounded-xl border border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-700">
           <input
             id="search-dropdown"
             className="w-full rounded-xl border-none bg-transparent p-2.5 text-sm text-gray-900 placeholder-gray-400 focus:ring-0 dark:text-white dark:placeholder-gray-400 dark:focus:ring-0"

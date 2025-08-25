@@ -25,7 +25,7 @@ export function Footer({ data }: FooterProps) {
     switch (platform) {
       case "facebook":
         return <FaFacebook className="min-w-5 min-h-5" />
-      case "twitter":
+      case "x":
         return <FaXTwitter className="min-w-5 min-h-5" />
       case "instagram":
         return <FaInstagram className="min-w-5 min-h-5" />

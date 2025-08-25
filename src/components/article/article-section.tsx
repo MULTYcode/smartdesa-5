@@ -16,9 +16,9 @@ export function NewsSection() {
         <div className="w-full px-6 sm:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
          <div className="flex w-full flex-col md:flex-row justify-between items-start gap-4">
            <div className="w-full md:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-1 gap-y-4 md:gap-2 lg:gap-4">
-            <div className="col-span-2 flex justify-between items-center">
+            <div className="col-span-2 flex justify-between items-start">
               <div>
-                <h2 className="text-3xl font-bold text-gray-800 mb-2">{article.title}</h2>
+                <h2 className="text-3xl font-bold text-gray-800">{article.title}</h2>
               </div>
               <Link href="/article" className="text-[#CF4647] font-medium flex items-center hover:underline">
                 Lihat Semua

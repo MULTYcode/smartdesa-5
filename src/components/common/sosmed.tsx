@@ -11,7 +11,7 @@ export default function Sosmed() {
         switch (platform.toLowerCase()) {
             case "facebook":
             return <FaFacebook className="min-w-5 min-h-5 hover:text-[#F7C873]" />
-            case "twitter":
+            case "x":
             return <FaXTwitter className="min-w-5 min-h-5 hover:text-[#F7C873]" />
             case "instagram":
             return <FaInstagram className="min-w-5 min-h-5 hover:text-[#F7C873]" />
