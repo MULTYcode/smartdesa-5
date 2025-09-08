@@ -189,7 +189,7 @@ return (
                   data?.map((card: Infografis, index:number) => {
                       return (
                        <div key={card.slug} tabIndex={1} onClick={() => { setIsOpen(true); setCurrentIndex(index); }}>
-                        <div className="relative px-1 lg:px-2 group hover:scale-100 focus:scale-100 transition duration-300 ease-in-out">
+                        <div className="relative pr-1 lg:pr-2 group hover:scale-100 focus:scale-100 transition duration-300 ease-in-out">
                           <div className="relative flex justify-center overflow-hidden w-full rounded-2xl aspect-[4/5]">
                             <Image
                               className="w-full h-full object-cover"

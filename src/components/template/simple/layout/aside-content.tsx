@@ -27,7 +27,7 @@ export default function AsideContent({
           <div>{children}</div>
         </div>
       </main>
-      <aside className="w-full md:w-72 lg:w-96 md:sticky md:top-0 md:self-start h-fit sm:pl-3 my-2 border-gray-300 md:border-l">
+      <aside className="w-full md:w-72 lg:w-96 md:sticky md:top-0 md:self-start h-fit sm:pl-3 border-gray-300 md:border-l">
         <div className="space-y-6">
           <div>
             <h2 className="text-xl font-bold text-[#CF4647] mb-4 pb-2 border-gray-300 border-b">

@@ -12,7 +12,6 @@ export function SambutanSection({ data }: WellcomeSectionProps) {
         <div className="items-center">
           <RichTextContent
             content={data}
-            className="px-4 py-4 md:px-16"
           />
         </div>
       </div>

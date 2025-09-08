@@ -57,10 +57,10 @@ export default function Home() {
         </section>
       )}
       <div className="w-full flex justify-center">
-        <div className="w-full px-6 sm:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl grid grid-cols-3 lg:grid-cols-4 gap-y-6">
-          <div className="bg-transparent rounded-s-md col-span-4 lg:py-6 grid grid-cols-6">
+        <div className="w-full px-6 sm:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl my-10 grid grid-cols-3 lg:grid-cols-4 gap-y-6">
+          <div className="bg-transparent rounded-s-md col-span-4 grid grid-cols-6">
             <div className="col-span-6 grid grid-cols-6 gap-8">
-              <div className="col-span-6 grid grid-cols-6 gap-1 px-3 md:px-0 justify-between">
+              <div className="col-span-6 grid grid-cols-6 gap-1 justify-between">
                 <div className="col-span-6 text-end">
                   <div className="relative w-full">
                     <input
@@ -122,7 +122,7 @@ export default function Home() {
                   </div>
                 ) : (
                   <>
-                   <div className="grid grid-cols-12 col-span-6 gap-6 px-3 sm:w-full md:px-0">
+                   <div className="grid grid-cols-12 col-span-6 gap-6 sm:w-full">
                     {allTour.map((card) => (
                       <Link
                         tabIndex={1}

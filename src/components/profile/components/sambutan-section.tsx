@@ -49,9 +49,9 @@ export function SambutanSection({ data }: WellcomeSectionProps) {
                         className="w-full backdrop-blur-md rounded-2xl border border-[#CF4647]/20 shadow-2xl px-7 py-8 md:p-12"
                     >
 
-                        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
-                            <div className="flex-1 relative">
-                                <div className="absolute -left-6 -top-6 text-7xl text-black font-serif">&quot;</div>
+                        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+                            <div className="flex-1 relative w-full">
+                                <div className="absolute -left-5 -top-6 text-7xl text-black font-serif">&quot;</div>
 
                                 <div
                                     className={`w-full`}
@@ -62,7 +62,7 @@ export function SambutanSection({ data }: WellcomeSectionProps) {
                                     />
                                 </div>
 
-                                <div className="absolute -right-6 -bottom-6 text-7xl text-black font-serif">&quot;</div>
+                                <div className="absolute -right-5 -bottom-16 text-7xl text-black font-serif">&quot;</div>
                             </div>
                         </div>
                  </motion.div>
@@ -77,8 +77,8 @@ export function SambutanSection({ data }: WellcomeSectionProps) {
                         className="w-full backdrop-blur-md rounded-2xl border border-[#CF4647]/20 shadow-2xl px-7 py-8 md:p-12"
                     >
 
-                        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
-                            <div className="flex-1 relative">
+                        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+                            <div className="flex-1 relative w-full">
                                 <div className="absolute -left-6 -top-6 text-7xl text-black font-serif">&quot;</div>
 
                                 <div
@@ -90,7 +90,7 @@ export function SambutanSection({ data }: WellcomeSectionProps) {
                                     />
                                 </div>
 
-                                <div className="absolute -right-6 -bottom-6 text-7xl text-black font-serif">&quot;</div>
+                                <div className="absolute -right-6 -bottom-16 text-7xl text-black font-serif">&quot;</div>
                             </div>
                         </div>
                  </motion.div>

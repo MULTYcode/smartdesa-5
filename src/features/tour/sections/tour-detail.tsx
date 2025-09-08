@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from 'next/navigation';
+import { redirect, useParams } from 'next/navigation';
 import React from 'react'
 import useTourDetail from '../hooks/useDetail';
 import StreetViewChecker from '@/lib/checkStreetView';
@@ -8,18 +8,79 @@ import { BiGlobe } from 'react-icons/bi';
 import { CgMail } from 'react-icons/cg';
 import Image from 'next/image';
 import { MapIcon, MapPin } from 'lucide-react';
+import Link from 'next/link';
+import { validateAndRedirect } from '@/lib/shouldRedirect';
 
 export default function TourDetail() {
     const { slug } = useParams();
-    const { data } = useTourDetail({}, String(slug));
+    const { data, isLoading } = useTourDetail({}, String(slug));
     const gmapsApiKey = process.env.NEXT_PUBLIC_GMAPS_API_KEY;
     const isStreetAvailable = StreetViewChecker({ lat: Number(data?.latitude), lng: Number(data?.longitude) });
 
-    let mapsUrl = `https://www.google.com/maps/embed/v1/place?key=${gmapsApiKey}&q=${data?.latitude},${data?.longitude}`;
-    if (isStreetAvailable) {
-        mapsUrl = `https://www.google.com/maps/embed/v1/streetview?key=${gmapsApiKey}&location=${data?.latitude},${data?.longitude}&heading=0&pitch=0`;
+      if (isLoading) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-8">
+                <div className="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                    <AsideContent>
+                        <div className="pr-0 lg:pr-6">
+                            {/* Title Skeleton */}
+                            <div className="mb-8 bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-200 dark:border-slate-700 animate-pulse">
+                                <div className="h-10 w-2/3 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-6 h-6 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+                                    <div className="h-4 w-1/3 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                </div>
+                            </div>
+                            {/* Image Skeleton */}
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                                <div className="lg:col-span-3">
+                                    <div className="aspect-video w-full bg-slate-200 dark:bg-slate-700 rounded-2xl shadow-2xl animate-pulse"></div>
+                                </div>
+                            </div>
+                            {/* Content Skeleton */}
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                                <div className="lg:col-span-2 space-y-6">
+                                    <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 animate-pulse">
+                                        <div className="h-8 w-1/2 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
+                                        <div className="space-y-2">
+                                            <div className="h-4 w-full bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                            <div className="h-4 w-5/6 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                            <div className="h-4 w-2/3 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="lg:col-span-1 space-y-6">
+                                    <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-200 dark:border-slate-700 animate-pulse">
+                                        <div className="h-6 w-1/3 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
+                                        <div className="space-y-4">
+                                            <div className="h-10 w-full bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                            <div className="h-10 w-full bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                            <div className="h-10 w-full bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Map Skeleton */}
+                            <div className="mt-12">
+                                <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-200 dark:border-slate-700 animate-pulse">
+                                    <div className="h-8 w-1/4 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
+                                    <div className="w-full h-96 bg-slate-200 dark:bg-slate-700 rounded-xl"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </AsideContent>
+                </div>
+            </div>
+        );
     }
 
+  
+    if(data){
+      let mapsUrl = `https://www.google.com/maps/embed/v1/place?key=${gmapsApiKey}&q=${data?.latitude},${data?.longitude}`;
+        if (isStreetAvailable) {
+            mapsUrl = `https://www.google.com/maps/embed/v1/streetview?key=${gmapsApiKey}&location=${data?.latitude},${data?.longitude}&heading=0&pitch=0`;
+        }
+  
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-8">
             <div className="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -53,7 +114,7 @@ export default function TourDetail() {
                                 </div>
                          </div>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                             <div className="lg:col-span-2 space-y-6">
                                 <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700">
                                     <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
@@ -134,4 +195,20 @@ export default function TourDetail() {
             </div>
         </div>
     )
+  }
+    if (validateAndRedirect([typeof slug === "string" ? slug : "*"])) {
+    return redirect("/tour");
+  }
+  return (
+    <div className="flex flex-col text-center items-center justify-center h-screen w-full text-gray-700">
+        <h1 className="text-4xl font-bold">404 - Page Not Found</h1>
+        <p className="mt-2 text-lg">Halaman yang kamu cari tidak ditemukan.</p>
+        <Link
+          href="/"
+          className="mt-4 px-6 py-2 bg-gray-700 text-white rounded hover:bg-gray-800"
+        >
+          Kembali ke Beranda
+        </Link>
+      </div>
+  );
 }

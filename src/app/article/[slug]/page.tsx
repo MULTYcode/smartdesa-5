@@ -4,6 +4,8 @@ import { getArticle } from '@/features/article/libs/getArticle';
 import { Metadata } from 'next';
 import SettingService from '@/shared/services/setting.service';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { validateAndRedirect } from '@/lib/shouldRedirect';
 
 type PageProps = {
   params: {
@@ -34,6 +36,9 @@ export default async function Page({ params }: PageProps ) {
       </div>
     </div>;
   } catch {
+    if (validateAndRedirect([params.slug])) {
+      return redirect("/article");
+    }
     return <div className="min-h-screen flex justify-center w-full">
        <div className="w-full px-6 sm:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
            <div className="flex flex-col text-center items-center justify-center h-96 w-full text-gray-700">

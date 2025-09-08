@@ -50,7 +50,7 @@ export function MenuItem({ item, basePath = "", level = 0 }: MenuItemProps) {
             {item.title}
           </Link>
         ) : (
-          <div className="px-4 py-2 text-sm font-medium">
+          <div className="px-4 py-2 text-sm font-medium text-gray-500">
             {item.title}
           </div>
         )}
