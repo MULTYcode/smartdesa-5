@@ -10,7 +10,7 @@ export default function ArtikelPopuler() {
     const { data } = useArticle();
 
     return (
-        data?.pages[0]?.data.length === 0 ? <ArticlePopulerSkeleton /> :
+        !data?.pages[0] || data?.pages[0]?.data.length === 0 ? <ArticlePopulerSkeleton /> :
             <div className='w-full'>
                 <h2 className='text-xl font-bold mb-4'>Artikel Populer</h2>
                 <ul className='space-y-4'>

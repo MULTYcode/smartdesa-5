@@ -183,7 +183,7 @@ return (
                 ))
                 ) : !isError && !isFetching && (!data || Array.isArray(data) && data.length === 0) ? (
                     <div className="mb-4 col-span-8 w-full">
-                      <p className="text-black text-md min-h-52 flex items-center justify-center dark:text-gray-400">Infografis tidak tersedia</p>
+                      <p className="text-black text-md min-h-72 flex items-center justify-start dark:text-gray-400">Infografis tidak tersedia</p>
                     </div>
                 ) : (
                   data?.map((card: Infografis, index:number) => {

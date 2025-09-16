@@ -12,7 +12,7 @@ import { SetStateAction, useState } from "react";
 
 export default function Home() {
 
-  const { updatedInfoCards, cta, infoWellcome, infoProgram, about } = useContent();
+  const { infoWellcome, infoProgram, about } = useContent();
     const [searchValue, setSearchValue] = useState('');
     const handleChange = (e: { target: { value: SetStateAction<string>; }; }) => {
         setSearchValue(e.target.value);
@@ -55,7 +55,7 @@ export default function Home() {
       </div>
       <div className="flex py-4 justify-center items-start flex-col md:flex-row gap-4 px-6 sm:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl w-full">
            <div className="w-full md:w-3/4">
-            <MenuCards cards={updatedInfoCards} cta={cta} />
+            <MenuCards />
           </div>
           <div className="w-full md:w-1/4">
             <h2 className='text-lg uppercase font-bold mb-4'>Infografis</h2>

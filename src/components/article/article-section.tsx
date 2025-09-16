@@ -27,7 +27,7 @@ export function NewsSection() {
             </div>
             {
               isLoading ?   Array.from({ length: 4 }).map((_, index) => <PageArticleSkeleton key={index} />) :
-              data?.pages[0]?.data.length === 0 ? <div className="h-36 w-full col-span-2 xl:col-span-4  flex items-center justify-center"><p className="text-center">Tidak ada artikel</p></div> :
+              !data?.pages[0] || data?.pages[0]?.data.length === 0 ? <div className="h-72 w-full col-span-2 xl:col-span-4  flex items-center justify-start"><p className="text-start">Tidak ada artikel</p></div> :
               data?.pages[0]?.data.map((item) => (
                 <Link key={item.id} className="col-span-2 md:col-span-1" href={`/article/${item.slug}`}>
                     <motion.div

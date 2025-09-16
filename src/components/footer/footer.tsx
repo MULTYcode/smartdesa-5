@@ -174,7 +174,7 @@ export function Footer({ data }: FooterProps) {
 
         <div className="border-t border-green-100 mt-12 pt-8 text-center text-green-100 text-sm">
           <p>
-            © {new Date().getFullYear()} {data?.regionEntity}. Hak Cipta Dilindungi.
+            © {new Date().getFullYear()} Muara Enim. Hak Cipta Dilindungi.
           </p>
         </div>
       </div>

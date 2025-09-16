@@ -3,18 +3,17 @@
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/simple/card"
-import { CTASection, InfoCard } from "@/types/Simple"
 import Icons from "../common/icons"
 import { useContent } from "@/hooks/useContent"
+import useSetting from "@/hooks/useSettings"
+import { InfoCard } from "@/types/Simple"
 
-interface InfoSectionProps {
-  cards: InfoCard[],
-  cta: CTASection
-}
 
-export default function MenuCards({ cards }: InfoSectionProps) {
+export default function MenuCards() {
 
+  const { data, isLoading } = useSetting(`service-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
   const { service } = useContent();
+  const appData: InfoCard[] = data?.value || [];
 
   function CardMenuSkeleton() {
     return <Card className="h-full py-3 bg-white/90 backdrop-blur-sm border-gray-200 animate-pulse">
@@ -48,14 +47,12 @@ export default function MenuCards({ cards }: InfoSectionProps) {
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-1 gap-y-4 sm:gap-4">
                 {
-
-                  cards.length <= 0 && (
-                    [...Array(6)].map((_, index) => (              
-                        <CardMenuSkeleton key={index} />              
-                    ))
+                  isLoading ? [...Array(6)].map((_, index) => <CardMenuSkeleton key={index} />) :
+                  appData.length <= 0 && (
+                    <div className="h-72 w-full col-span-2 xl:col-span-4  flex items-center justify-start"><p className="text-start">Tidak ada layanan</p></div>
                   )
                 }
-                {cards.map((item, index) => (
+                {appData.map((item, index) => (
                   <Link key={item.id} target="blank" href={item.link} className="w-full h-full">
                     <motion.div
                       initial={{ opacity: 0, y: 30 }}
@@ -76,7 +73,7 @@ export default function MenuCards({ cards }: InfoSectionProps) {
                             </span>
                             <CardTitle className="text-black text-xl">{item.title}</CardTitle>
                           </div>
-                          <CardDescription className="text-black font-medium">{item.description}</CardDescription>
+                          <CardDescription className="text-black font-medium">Semua informasi tentang {item.title} dapat kamu lihat disini</CardDescription>
                         </CardHeader>
                         <CardFooter>
                             

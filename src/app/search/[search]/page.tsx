@@ -1,7 +1,6 @@
 'use client'
 
 import { use, useState } from "react";
-import { PageProps } from "../../../../.next/types/app/search/[search]/page";
 import Refetch from "@/components/shared/refetch";
 import useTour from "@/features/tour/hooks/useList";
 import useInfografis from "@/features/infografis/hooks/useInfografies";
@@ -14,6 +13,10 @@ import useArticle from "@/features/article/hooks/useArticle";
 interface DynamicPageProps {
     params: { search?: string };
   }
+
+  interface PageProps {
+  params: Promise<{ search?: string }>;
+}
 
 export default function Home({ params }: DynamicPageProps & PageProps) {
     const unwrappedParams = use(params);
