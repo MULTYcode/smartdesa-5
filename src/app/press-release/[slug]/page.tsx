@@ -1,7 +1,9 @@
 "use client"
 import Link from 'next/link';
 import { validateAndRedirect } from '@/lib/shouldRedirect';
-import { redirect, useParams } from 'next/navigation';
+import { redirect, useParams, useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
+import useFeatureFlags from '@/hooks/useFeatureFlags';
 import SliderCard from '@/components/shared/sliderImage';
 import moment from 'moment';
 import 'moment/locale/id';
@@ -15,7 +17,29 @@ import Image from 'next/image';
 
 export default function Page() {
   const { slug }: { slug: string } = useParams();
+  const router = useRouter();
+  const { pressRelease: isPressReleaseEnabled, isLoading: isFeaturesLoading } = useFeatureFlags();
+
   const { data: pressRelease, isLoading } = usePressReleaseDetail({ with: "category,attachments" }, slug);
+
+  useEffect(() => {
+    if (!isFeaturesLoading && !isPressReleaseEnabled) {
+      router.replace('/');
+    }
+  }, [isPressReleaseEnabled, isFeaturesLoading, router]);
+
+
+  if (isFeaturesLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen w-full">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#CF4647]"></div>
+      </div>
+    );
+  }
+
+  if (!isPressReleaseEnabled) {
+    return null;
+  }
 
   try {
     const rawDescription = pressRelease?.content || "";
@@ -52,6 +76,7 @@ export default function Page() {
         <div className="w-full px-4 sm:px-6 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
           <AsideContent>
             {isLoading ? (
+
               <div className="flex flex-col pr-0 sm:pr-3 my-2 gap-y-2 min-h-screen animate-pulse">
                 <div className="h-4 w-24 sm:w-32 bg-gray-200 rounded"></div>
                 <div className="h-8 sm:h-10 w-full sm:w-3/4 bg-gray-200 rounded"></div>

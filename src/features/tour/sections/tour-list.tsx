@@ -7,12 +7,27 @@ import { CgMail } from "react-icons/cg";
 import Image from "next/image";
 import Refetch from "@/components/shared/refetch";
 import useSetting from "@/hooks/useSettings";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import useFeatureFlags from "@/hooks/useFeatureFlags";
+
 
 export default function Home() {
+  const router = useRouter();
+  const { isSectionEnabled, isLoading: isFeaturesLoading } = useFeatureFlags();
+  const isTourEnabled = isSectionEnabled("tour");
+
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    if (!isFeaturesLoading && !isTourEnabled) {
+      router.replace("/");
+    }
+  }, [isTourEnabled, isFeaturesLoading, router]);
 
   const {
     data: setting,
+
     isLoading: isSettingLoading,
     isFetching: isSettingFetching,
     refetch: refetchSetting,
@@ -33,9 +48,22 @@ export default function Home() {
     ? { backgroundImage: `url(${setting.value.imageUrl})` }
     : { backgroundImage: `url(/images/unavailable-image.png)` };
 
+  if (isFeaturesLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen w-full">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#CF4647]"></div>
+      </div>
+    );
+  }
+
+  if (!isTourEnabled) {
+    return null;
+  }
+
   return (
     <>
       {isSettingLoading ? (
+
         <div className="flex animate-pulse mb-4 col-span-8 w-full">
           <div className="h-52 w-full flex-1 rounded-2xl bg-gray-200"></div>
         </div>

@@ -1,6 +1,7 @@
 "use client";
-import { redirect, useParams } from 'next/navigation';
-import React from 'react'
+import { redirect, useParams, useRouter } from 'next/navigation';
+import React, { useEffect } from 'react'
+import useFeatureFlags from '@/hooks/useFeatureFlags';
 import useTourDetail from '../hooks/useDetail';
 import StreetViewChecker from '@/lib/checkStreetView';
 import AsideContent from '@/components/template/simple/layout/aside-content';
@@ -13,11 +14,35 @@ import { validateAndRedirect } from '@/lib/shouldRedirect';
 
 export default function TourDetail() {
     const { slug } = useParams();
+    const router = useRouter();
+    const { isSectionEnabled, isLoading: isFeaturesLoading } = useFeatureFlags();
+    const isTourEnabled = isSectionEnabled("tour");
+
     const { data, isLoading } = useTourDetail({}, String(slug));
+
+    useEffect(() => {
+        if (!isFeaturesLoading && !isTourEnabled) {
+            router.replace("/");
+        }
+    }, [isTourEnabled, isFeaturesLoading, router]);
+
     const gmapsApiKey = process.env.NEXT_PUBLIC_GMAPS_API_KEY;
     const isStreetAvailable = StreetViewChecker({ lat: Number(data?.latitude), lng: Number(data?.longitude) });
 
-      if (isLoading) {
+    if (isFeaturesLoading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen w-full">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#CF4647]"></div>
+            </div>
+        );
+    }
+
+    if (!isTourEnabled) {
+        return null;
+    }
+
+    if (isLoading) {
+
         return (
             <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-8">
                 <div className="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
