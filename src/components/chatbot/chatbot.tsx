@@ -2,25 +2,28 @@
 
 import dynamic from 'next/dynamic';
 
+import useChatbotSettings from '@/hooks/useChatbotSettings';
+
 const BubbleChat = dynamic(() => import('flowise-embed-react').then(mod => mod.BubbleChat), { ssr: false });
 
 
 const Chatbot = () => {
+    const { chatbotId, chatbotUrl } = useChatbotSettings();
 
   return (
      <BubbleChat
-            chatflowid={process.env.NEXT_PUBLIC_CHATBOT_ID ?? ''}
-            apiHost={process.env.NEXT_PUBLIC_CHATBOT_BASE_URL ?? ''}
-             theme={{    
+            chatflowid={chatbotId}
+            apiHost={chatbotUrl}
+            theme={{    
                 button: {
                     backgroundColor: '#3B81F6',
                     right: 20,
-                    bottom: 20,
+                    bottom: 70,
                     size: 48,
                     dragAndDrop: true,
                     iconColor: 'white',
                     autoWindowOpen: {
-                        autoOpen: false,
+                        autoOpen: true,
                         openDelay: 2,
                         autoOpenOnMobile: false
                     }

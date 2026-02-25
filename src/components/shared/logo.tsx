@@ -24,7 +24,7 @@ export default function Logo({isDark}: { isDark?: boolean }) {
           ) : (
               <>       
                  <Link href="/" className="flex flex-row py-1 justify-center items-center space-x-3 rtl:space-x-reverse rounded-md lg:hover:scale-95 transition transform duration-300 ease-in-out">
-                    <div className="flex items-center space-x-3">
+                    <div className="flex items-center space-x-1 sm:space-x-3">
                       <Image
                           className="h-1"
                           src={logo?.value?.imageUrl ?? '/images/download.png'}
@@ -37,7 +37,7 @@ export default function Logo({isDark}: { isDark?: boolean }) {
                           }}
                         />
                         <div className="flex flex-col justify-center">
-                            <h1 className={`font-bold text-lg leading-5 ${isDark ? 'text-[#F7C873]' : 'text-[#D97706]'}`}>{logo?.value?.regionEntity ?? "[Judul logo belum diatur]"}</h1>
+                            <h1 className={`font-bold text-sm sm:text-lg leading-5 ${isDark ? 'text-[#F7C873]' : 'text-[#D97706]'}`}>{logo?.value?.regionEntity ?? "[Judul logo belum diatur]"}</h1>
                             <p className={`text-xs font-semibold ${isDark ? 'text-white' : 'text-gray-800'}`}>{logo?.value?.regionDescription ?? "[Sub judul logo belum diatur]"}</p>
                           </div>
                       </div>

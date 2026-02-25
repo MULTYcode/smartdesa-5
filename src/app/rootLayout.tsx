@@ -6,6 +6,7 @@ import { SidebarProvider } from "@/context/SidebarContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Chatbot from "@/components/chatbot/chatbot";
 import LayoutInner from "./layoutInner";
+import FloatingWeatherButton from "@/components/weather/FloatingWeatherButton";
 
 export default function RootLayoutClient({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
@@ -17,6 +18,7 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
           <LayoutInner>{children}</LayoutInner>
         </SidebarProvider>
       </ThemeProvider>
+      <FloatingWeatherButton />
       <Chatbot />
     </QueryClientProvider>
   );

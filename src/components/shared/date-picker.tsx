@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.css';
-import Label from './Label';
 import { Calendar } from 'lucide-react';
 import { FaX } from 'react-icons/fa6';
 import Hook = flatpickr.Options.Hook;
@@ -20,7 +19,6 @@ export default function DatePicker({
   id,
   mode,
   onChange,
-  label,
   defaultDate,
   placeholder,
 }: PropsType) {
@@ -60,9 +58,8 @@ export default function DatePicker({
 
   return (
     <div>
-      {label && <Label htmlFor={id}>{label}</Label>}
 
-      <div className="relative">
+      <div className="w-full relative">
         <input
           id={id}
           placeholder={placeholder}

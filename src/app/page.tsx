@@ -2,21 +2,48 @@
 "use client";
 import { NewsSection } from "@/components/article/article-section";
 import HeroWelcome from "@/components/hero/hero-welcome";
-import SliderCard from "@/components/infografis/sliderInfografis";
+import { InfografisSection } from "@/components/infografis/infografis-home";
+import DynamicInstagramFeed from "@/components/instagram/DynamicInstagramFeed";
 import MenuCards from "@/components/menu/menu-cards";
 import { SambutanSection } from "@/components/profile/components/sambutan-section";
 import { TourSection } from "@/components/tour/tour-section";
 import { useContent } from "@/hooks/useContent";
+import useFeatureFlags, { type SectionKey } from "@/hooks/useFeatureFlags";
 import Link from "next/link";
 import { SetStateAction, useState } from "react";
 
-export default function Home() {
+const SECTION_COMPONENTS: Record<SectionKey, React.ComponentType<any>> = {
+  dynamic_section: SambutanSection,
+  service: MenuCards,
+  news: NewsSection,
+  instagram: DynamicInstagramFeed,
+  infografis: InfografisSection,
+  tour: TourSection,
+};
 
-  const { infoWellcome, infoProgram, about } = useContent();
-    const [searchValue, setSearchValue] = useState('');
-    const handleChange = (e: { target: { value: SetStateAction<string>; }; }) => {
-        setSearchValue(e.target.value);
-    };
+const FALLBACK_ORDER: SectionKey[] = [
+  "instagram",
+  "service",
+  "infografis",
+  "dynamic_section",
+  "news",
+  "tour",
+];
+
+export default function Home() {
+  const { about } = useContent();
+  const { sectionsOrder, isLoading: isFeaturesLoading, isError: isFeaturesError, isSectionEnabled } = useFeatureFlags();
+  const [searchValue, setSearchValue] = useState('');
+  const handleChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+    setSearchValue(e.target.value);
+  };
+
+  const renderSections = (() => {
+    if (isFeaturesLoading || isFeaturesError || sectionsOrder.length === 0) {
+      return FALLBACK_ORDER.map((key) => ({ key, enabled: true, order: 0 }));
+    }
+    return sectionsOrder.filter((s) => s.enabled);
+  })();
 
   return (
     <main className="justify-center items-center min-h-screen flex flex-col">
@@ -30,41 +57,37 @@ export default function Home() {
             value={searchValue}
             onChange={handleChange}
             required
-          />
+            />
           <Link
             href={searchValue ? `/search/${searchValue}` : "#"}
             className="flex items-center justify-center rounded-e-xl border-l border-gray-300 bg-gray-200 px-4 py-2.5 transition-colors hover:bg-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600"
-          >
+            >
             <svg
               className="h-5 w-5 text-gray-500 dark:text-gray-300"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 20 20"
-            >
+              >
               <path
                 stroke="currentColor"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-              />
+                />
             </svg>
           </Link>
         </div>
       </div>
-      <div className="flex py-4 justify-center items-start flex-col md:flex-row gap-4 px-6 sm:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl w-full">
-           <div className="w-full md:w-3/4">
-            <MenuCards />
-          </div>
-          <div className="w-full md:w-1/4">
-            <h2 className='text-lg uppercase font-bold mb-4'>Infografis</h2>
-            <SliderCard slideToShow={1} />
-          </div>
-      </div>
-      <SambutanSection data={{ wellcome: infoWellcome, program: infoProgram }} />
-      <NewsSection />
-      <TourSection  data={about}/>
+      {renderSections.map((section) => {
+        const Component = SECTION_COMPONENTS[section.key];
+        if (!Component) return null;
+        if (section.key === "tour") {
+          return <Component key={section.key} data={about} />;
+        }
+        return <Component key={section.key} />;
+      })}
     </main>
   )
 }

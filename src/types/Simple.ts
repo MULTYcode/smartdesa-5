@@ -46,10 +46,13 @@ export interface SocialLink {
 export interface InfoCard {
   id: string
   title: string
-  description: string
+  description?: string | null
   icon: string
-  link: string
+  link?: string
   order: number
+  image?: string | null
+  child?: InfoCard[]
+  isDefault?: boolean
 }
 
 // News Item Types

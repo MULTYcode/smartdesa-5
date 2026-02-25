@@ -2,9 +2,10 @@ import type React from "react"
 import "@/app/globals.css"
 import { Geist, Geist_Mono } from "next/font/google";
 import SettingService from "@/shared/services/setting.service"
-import HolyLoader from "holy-loader";
 import RootLayoutClient from "./rootLayout";
 import Script from "next/script";
+import ClientLoader from "@/components/common/client-loader";
+import GoogleAnalytics from "@/components/shared/GoogleAnalytics";
 
 export const metadata = await generateMetadata(); 
 
@@ -18,20 +19,35 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
 
+  let gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || "";
+    try {
+      const villageId = process.env.NEXT_PUBLIC_VILLAGE_ID;
+      const response = await SettingService.getSetting(`google-analytics-id-${villageId}`);
+      if (response?.data?.value?.id) {
+        gaId = response.data.value.id;
+      }
+    } catch (error) {
+      console.error("Failed to fetch GA ID on server:", error);
+    }
+
 
   return (
-     <html lang="en">
-      <HolyLoader/>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <RootLayoutClient>{children}</RootLayoutClient>
+     <html lang="en" suppressHydrationWarning>
+      <head />
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
+        <ClientLoader />
+        <RootLayoutClient>
+          {children}
+          <GoogleAnalytics gaId={gaId} />
+        </RootLayoutClient>
          <Script
-            src="https://website-widgets.pages.dev/dist/sienna.min.js"
+            src="https://cdn.jsdelivr.net/npm/sienna-accessibility@latest/dist/sienna-accessibility.umd.js"
             strategy="afterInteractive"
           />
       </body>

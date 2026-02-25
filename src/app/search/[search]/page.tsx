@@ -8,23 +8,50 @@ import { Infografis } from "@/types/type";
 import Link from "next/link";
 import LightboxImage from "@/components/infografis/Lightbox";
 import useArticle from "@/features/article/hooks/useArticle";
-
+import useFeatureFlags from "@/hooks/useFeatureFlags";
+import { Search, FileText, Image as ImageIcon, MapPin } from "lucide-react";
 
 interface DynamicPageProps {
     params: { search?: string };
-  }
+}
 
-  interface PageProps {
-  params: Promise<{ search?: string }>;
+interface PageProps {
+    params: Promise<{ search?: string }>;
+}
+
+interface SearchResultItem {
+    id: string | number;
+    type: "article" | "infografis" | "tour";
+    title: string;
+    description?: string;
+    href?: string;
+    onClick?: () => void;
+}
+
+function TypeBadge({ type }: { type: "article" | "infografis" | "tour" }) {
+    const config = {
+        article: { label: "Artikel", icon: FileText, color: "bg-[#CF4647]/10 text-[#CF4647]" },
+        infografis: { label: "Infografis", icon: ImageIcon, color: "bg-[#F7C873]/20 text-[#2A363B]" },
+        tour: { label: "Wisata", icon: MapPin, color: "bg-[#2A363B]/10 text-[#2A363B]" },
+    };
+    const { label, icon: Icon, color } = config[type];
+    return (
+        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${color}`}>
+            <Icon className="w-3 h-3" />
+            {label}
+        </span>
+    );
 }
 
 export default function Home({ params }: DynamicPageProps & PageProps) {
     const unwrappedParams = use(params);
     const [searchValue, setSearchValue] = useState(unwrappedParams.search || '');
+    const { isSectionEnabled } = useFeatureFlags();
+    const isTourEnabled = isSectionEnabled("tour");
 
-    const { data: articles, isLoading: IsArticleLoading, isFetching:IsArticleFetching, refetch:refetchArticle, isError:isArticleError} = useArticle({"search": searchValue, "page_size": 6});
-    const { data: tour, isLoading: isTourLoading, isFetching: isTourFetching, refetch: refetchTour, isError: isTourError } = useTour({"search": searchValue});
-    const { data: infografis, isLoading: isInfografisLoading, isFetching: isInfografisFetching, refetch: refetchInfografis, isError: isInfografisError } = useInfografis({"search": searchValue});
+    const { data: articles, isLoading: isArticleLoading, isFetching: isArticleFetching, refetch: refetchArticle, isError: isArticleError } = useArticle({ "search": searchValue, "page_size": 6 });
+    const { data: tour, isLoading: isTourLoading, isFetching: isTourFetching, refetch: refetchTour, isError: isTourError } = useTour({ "search": searchValue });
+    const { data: infografis, isLoading: isInfografisLoading, isFetching: isInfografisFetching, refetch: refetchInfografis, isError: isInfografisError } = useInfografis({ "search": searchValue });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.target.value);
@@ -33,190 +60,139 @@ export default function Home({ params }: DynamicPageProps & PageProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-  return (
-      <>
-         <div className="min-h-screen py-6 flex justify-center w-full">
-            <div className="w-full px-6 sm:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl col-span-6 grid grid-cols-6 gap-x-4 gap-y-8">
-                <div className="relative w-full col-span-6">
-                    <input id="search-dropdown"value={searchValue} onChange={handleChange} className="block py-3 px-5 pe-12 w-full rounded-sm text-sm text-gray-900 bg-gray-100 placeholder:text-black border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Cari judul ..." />
-                    <span className="absolute top-0 end-0 py-3 px-5 sm:ms-4 text-sm font-medium h-full text-white focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                        </svg>
-                    </span>
-                </div>
-                <div className="relative w-full hidden md:block md:col-span-2 lg:col-span-1">
-                    <div className="px-4 pb-0 sticky top-4 text-gray-900 md:pb-4 dark:text-white">
-                        <ul className="space-y-4" aria-labelledby="mega-menu-dropdown-button">
-                            <li>
-                                <a href="#article" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
-                                    Artikel
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#infografis" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
-                                    Infografis
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#wisata" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
-                                    Wisata
-                                </a>
-                            </li>
-                        </ul>
+    const isLoading = isArticleLoading || isInfografisLoading || (isTourEnabled && isTourLoading);
+    const isFetching = isArticleFetching || isInfografisFetching || (isTourEnabled && isTourFetching);
+    const hasAnyError = isArticleError || isInfografisError || (isTourEnabled && isTourError);
+
+    const results: SearchResultItem[] = [];
+
+    if (articles?.pages?.[0]?.data) {
+        articles.pages[0].data.forEach((article: any) => {
+            results.push({
+                id: `article-${article.id}`,
+                type: "article",
+                title: article.title,
+                description: article.description,
+                href: `/article/${article.slug}`,
+            });
+        });
+    }
+
+    if (infografis && Array.isArray(infografis)) {
+        infografis.forEach((item: Infografis, index: number) => {
+            results.push({
+                id: `infografis-${item.id}`,
+                type: "infografis",
+                title: item.title,
+                description: item.description,
+                onClick: () => { setIsOpen(true); setCurrentIndex(index); },
+            });
+        });
+    }
+
+    if (isTourEnabled && tour?.pages?.[0]?.data) {
+        tour.pages[0].data.forEach((item: any) => {
+            results.push({
+                id: `tour-${item.id}`,
+                type: "tour",
+                title: item.title,
+                description: item.description,
+                href: `/tour/${item.slug}`,
+            });
+        });
+    }
+
+    const totalResults = results.length;
+
+    return (
+        <div className="min-h-screen bg-white">
+            <div className="flex justify-center w-full">
+                <div className="py-8 md:py-12 w-full px-4 sm:px-6 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl flex flex-col gap-6">
+
+                    <div className="relative w-full">
+                        <input
+                            id="search-input"
+                            type="search"
+                            value={searchValue}
+                            onChange={handleChange}
+                            className="block w-full py-3.5 sm:py-4 px-5 pe-12 rounded-xl text-sm sm:text-base text-gray-900 bg-gray-50 placeholder:text-gray-400 border border-gray-200 focus:ring-2 focus:ring-[#F7C873] focus:border-[#F7C873] transition-all duration-300"
+                            placeholder="Cari artikel, infografis, atau wisata..."
+                        />
+                        <div className="absolute inset-y-0 end-0 flex items-center pe-4 pointer-events-none">
+                            <Search className="w-5 h-5 text-gray-400" />
+                        </div>
                     </div>
-                </div>
-                <div className="relative w-full col-span-6 grid grid-cols-6 gap-y-8 md:col-span-4 lg:col-span-5 overflow-y-auto">
-                    <div className="col-span-6">
-                        <div className="col-span-6">
-                            <span id="article" className="self-center align-baseline text-2xl leading-3 tracking-tighter font-semibold uppercase text-black">Artikel</span>
-                        </div>
-                        <div className="col-span-6">
-                            <hr className="h-px my-3 text-gray-400 bg-gray-200 border-1 dark:bg-gray-700"></hr>
-                        </div>
-                         <div className="col-span-6">  
-                            <dl className="text-gray-900 divide-y divide-gray-100 dark:text-white dark:divide-gray-700">
-                                { IsArticleLoading || (IsArticleFetching || (!articles || !articles.pages[0] || articles.pages[0]?.data.length === 0)) && isArticleError ? (
-                                     Array.from({ length: 4 }).map((_, index) => (
-                                        <div
-                                        key={index}
-                                        className="flex flex-col py-3 animate-pulse bg-gray-50 hover:bg-gray-100"
-                                        >
-                                        <dd className="h-6 bg-gray-200 rounded w-3/4 mb-2"></dd>
-                                        <dt className="h-4 bg-gray-200 rounded w-1/2"></dt>
+
+                    {!isLoading && !isFetching && (
+                        <p className="text-xs sm:text-sm text-gray-500">
+                            {totalResults > 0
+                                ? `Ditemukan ${totalResults} hasil untuk "${searchValue}"`
+                                : searchValue
+                                    ? `Tidak ada hasil untuk "${searchValue}"`
+                                    : "Mulai mengetik untuk mencari..."
+                            }
+                        </p>
+                    )}
+
+                    <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden min-h-[300px]">
+                        <div className="divide-y divide-gray-100">
+                            {isLoading || (isFetching && results.length === 0) ? (
+                                Array.from({ length: 6 }).map((_, index) => (
+                                    <div key={index} className="p-4 sm:p-5 animate-pulse flex flex-col gap-3">
+                                        <div className="flex items-center gap-3">
+                                            <div className="h-5 w-16 bg-gray-200 rounded-full"></div>
+                                            <div className="h-5 w-1/3 bg-gray-200 rounded"></div>
                                         </div>
-                                    ))
-                                ) : !isArticleError && !IsArticleFetching && (!articles || !articles.pages[0] || articles.pages[0]?.data.length === 0) ? (
-                                <div className="flex flex-col items-center justify-center py-12">
-                                    <p className="text-black text-2xl dark:text-gray-400 text-center">Artikel tidak ditemukan</p>
-                                </div>
-                                ) : isArticleError && !IsArticleFetching ? (
-                                <div className="flex flex-col items-center justify-center py-12">
-                                    <Refetch refetch={refetchArticle} />
-                                </div>
-                                ) : (
-                                articles?.pages[0].data.map((article, index) => (
-                                    <Link  key={article.id} href={`/article/${article.slug}`} tabIndex={1} className="col-span-6 md:col-span-3  lg:col-span-2 w-full">
-                                                <div
-                                                className={`flex flex-col py-3 ${
-                                                    index % 2 === 0 ? 'bg-gray-50' : ''
-                                                } hover:bg-gray-100 transition-colors duration-200`}
-                                                >
-                                                <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">
-                                                    <span className="block font-semibold text-gray-900">{article.title}</span>
-                                                </dt>
-                                                <dd className="text-mb text-gray-500 line-clamp-3 dark:text-white">
-                                                    {article.description}
-                                                </dd>
-                                            </div>
-                                    </Link>
-                                ))
-                                )}
-                            </dl>
-                        </div>
-                    </div>
-                    <div className="col-span-6">
-                        <div className="col-span-6">
-                            <span id="infografis" className="self-center align-baseline text-2xl leading-3 tracking-tighter font-semibold uppercase text-black">Infografis</span>
-                        </div>
-                        <div className="col-span-6">
-                            <hr className="h-px my-3 bg-gray-50 text-gray-400 border-1 dark:bg-gray-700"></hr>
-                        </div>
-                         <div className="col-span-6">  
-                            {isInfografisLoading || isInfografisFetching && (!infografis || infografis.length === 0) ? (
-                                Array.from({ length: 4 }).map((_, index) => (
-                                    <div
-                                    key={index}
-                                    className="flex flex-col py-3 animate-pulse bg-gray-50 hover:bg-gray-100"
-                                    >
-                                    <dd className="h-6 bg-gray-200 rounded w-3/4 mb-2"></dd>
-                                    <dt className="h-4 bg-gray-200 rounded w-1/2"></dt>
+                                        <div className="h-4 w-3/4 bg-gray-100 rounded"></div>
                                     </div>
                                 ))
-                                ) : !isInfografisFetching && (!infografis || infografis.length === 0) ? (
-                                <div className="flex flex-col items-center justify-center py-12">
-                                    <p className="text-black text-2xl dark:text-gray-400 text-center">Infografis tidak ditemukan</p>
+                            ) : hasAnyError && results.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center py-16 gap-4">
+                                    <p className="text-gray-500 text-base sm:text-lg">Gagal memuat hasil pencarian.</p>
+                                    <Refetch refetch={() => { refetchArticle(); refetchInfografis(); if (isTourEnabled) refetchTour(); }} />
                                 </div>
-                                ) : isInfografisError && !isInfografisFetching ? (
-                                <div className="flex flex-col items-center justify-center py-12">
-                                    <Refetch refetch={refetchInfografis} />
+                            ) : results.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center py-16 sm:py-20 gap-4 text-center px-4">
+                                    <div className="bg-gray-50 p-4 rounded-full">
+                                        <Search className="w-7 h-7 sm:w-8 sm:h-8 text-gray-300" />
+                                    </div>
+                                    <div className="max-w-xs">
+                                        <h3 className="text-gray-900 font-medium text-sm sm:text-base mb-1">Tidak ada hasil ditemukan</h3>
+                                        <p className="text-gray-400 text-xs sm:text-sm">Coba kata kunci lain atau periksa ejaan Anda.</p>
+                                    </div>
                                 </div>
-                                ) : (
-                                <>
-                                    {
-                                        infografis.map((infografis: Infografis , index:number) => (
-                                            <div 
-                                            key={infografis.id}
-                                            onClick={()=> {setIsOpen(true); setCurrentIndex(index)}}
-                                            className={`flex flex-col py-3 ${
-                                                index % 2 === 0 ? 'bg-gray-50' : ''
-                                            } hover:bg-gray-100 transition-colors duration-200`}
-                                            >
-                                                <dt className="mb-1 font-semibold text-gray-900 md:text-lg dark:text-gray-400">
-                                                    <span className="block">{infografis.title}</span>
-                                                </dt>
-                                                <dd className="text-mb text-gray-500 line-clamp-3 dark:text-white">
-                                                    {infografis.description}
-                                                </dd>
+                            ) : (
+                                results.map((item) => {
+                                    const content = (
+                                        <div className="p-4 sm:p-5 hover:bg-gray-50 transition-colors duration-200 group cursor-pointer">
+                                            <div className="flex items-center gap-2.5 mb-1.5">
+                                                <TypeBadge type={item.type} />
+                                                <h3 className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-[#CF4647] transition-colors line-clamp-1">
+                                                    {item.title}
+                                                </h3>
                                             </div>
-                                        ))
+                                            {item.description && (
+                                                <p className="text-xs sm:text-sm text-gray-500 line-clamp-2 leading-relaxed">
+                                                    {item.description}
+                                                </p>
+                                            )}
+                                        </div>
+                                    );
+
+                                    if (item.href) {
+                                        return <Link key={item.id} href={item.href}>{content}</Link>;
                                     }
-                                   <LightboxImage data={infografis} isOpen={isOpen} currentIndex={currentIndex} setIsOpen={setIsOpen} />
-                                </>
+                                    return <div key={item.id} onClick={item.onClick} role="button" tabIndex={0}>{content}</div>;
+                                })
                             )}
                         </div>
                     </div>
-                    <div className="col-span-6">
-                        <div className="col-span-6">
-                            <span id="wisata" className="self-center align-baseline text-2xl leading-3 tracking-tighter font-semibold uppercase text-black">Wisata</span>
-                        </div>
-                        <div className="col-span-6">
-                            <hr className="h-px my-3 text-gray-400 bg-gray-200 border-1 dark:bg-gray-700"></hr>
-                        </div>
-                         <div className="col-span-6">  
-                            <dl className="text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
-                                {isTourLoading || isTourFetching && tour?.pages[0]?.data.length === 0 ? (
-                                    Array.from({ length: 4 }).map((_, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex flex-col py-3 animate-pulse bg-gray-50 hover:bg-gray-100"
-                                            >
-                                            <dd className="h-6 bg-gray-200 rounded w-3/4 mb-2"></dd>
-                                            <dt className="h-4 bg-gray-200 rounded w-1/2"></dt>
-                                        </div>
-                                    ))
-                                    ) : !isTourFetching && tour?.pages[0]?.data.length === 0 ? (
-                                        <div className="flex flex-col items-center justify-center py-12">
-                                            <p className="text-black text-2xl dark:text-gray-400 text-center">Wisata tidak ditemukan</p>
-                                        </div>
-                                    ) : isTourError && !isTourFetching ? (
-                                        <div className="flex flex-col items-center justify-center py-12">
-                                            <Refetch refetch={refetchTour} />
-                                        </div>
-                                    ) : (
-                                    tour?.pages[0]?.data.map((tour, index) => (
-                                        <Link  key={tour.id} href={`/tour/${tour.slug}`} tabIndex={1} className="col-span-6 md:col-span-3  lg:col-span-2 w-full">
-                                            <div
-                                            className={`flex flex-col py-3 ${
-                                                index % 2 === 0 ? 'bg-gray-50' : ''
-                                            } hover:bg-gray-100 transition-colors duration-200`}
-                                            >
-                                                <dt className="mb-1 font-semibold text-gray-900 md:text-lg dark:text-gray-400">
-                                                    <span className="block">{tour.title}</span>
-                                                </dt>
-                                                <dd className="text-mb text-gray-500 line-clamp-3 dark:text-white">
-                                                    {tour.description}
-                                                </dd>
-                                            </div>
-                                        </Link>
-                                    ))
-                                )}
-                            </dl>
-                        </div>
-                    </div>
+
+                    {infografis && Array.isArray(infografis) && infografis.length > 0 && (
+                        <LightboxImage data={infografis} isOpen={isOpen} currentIndex={currentIndex} setIsOpen={setIsOpen} />
+                    )}
                 </div>
             </div>
         </div>
-      </>
-  );
+    );
 }
