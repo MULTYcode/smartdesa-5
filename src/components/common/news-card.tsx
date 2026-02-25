@@ -81,7 +81,7 @@ export function NewsCard({ title, excerpt, date, readTime, image, slug, classNam
           </div>
 
           {/* Content Section */}
-          <div className="p-3 sm:p-4">
+          <div>
             {/* Meta Info */}
             <div className="flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-1 text-xs sm:text-sm text-gray-500 mb-2 sm:mb-3">
               {author && (
