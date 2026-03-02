@@ -48,7 +48,7 @@ export function TourSection({ data }: TourSectionProps) {
   };
 
   return (
-    <section className="py-8 sm:py-10 md:py-12 flex justify-center">
+    <section className="w-full py-8 sm:py-10 md:py-12 flex justify-center">
       <div className="w-full px-4 sm:px-6 md:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-10 items-center">
             <motion.div
