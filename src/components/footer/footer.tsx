@@ -2,6 +2,7 @@ import { Mail, MapPin, Phone } from "lucide-react"
 import { NavItem, NavLayanan } from "@/types/Simple";
 import Logo from "../shared/logo";
 import { FaFacebook, FaInstagram, FaLinkedin, FaQuestion, FaThreads, FaTiktok, FaXTwitter, FaYoutube } from "react-icons/fa6";
+import { GoogleMapsEmbed } from "@/components/shared/GoogleMapsEmbed";
 
 interface SocialMedia {
     profileUrl: string;
@@ -28,9 +29,7 @@ interface FooterProps {
 
 export function Footer({ data }: FooterProps) {
 
-  const gmapsApiKey = process.env.NEXT_PUBLIC_GMAPS_API_KEY;
-  const hasCoordinates = data?.latitude && data?.longitude;
-  const mapsUrl = `https://www.google.com/maps/embed/v1/place?key=${gmapsApiKey}&q=${data?.latitude},${data?.longitude}`;
+  const hasCoordinates = !!(data?.latitude && data?.longitude);
 
   const renderSocialIcon = (platform: string) => {
     switch (platform.toLowerCase()) {
@@ -54,19 +53,15 @@ export function Footer({ data }: FooterProps) {
           <div className="flex flex-col space-y-4 sm:space-y-6">
              <div className="flex flex-col items-start gap-4">
                 <Logo isDark />
-                {hasCoordinates && gmapsApiKey && (
+                {hasCoordinates && (
                     <div className="w-full h-36 sm:h-44 md:h-48 rounded-xl overflow-hidden bg-white/5 border border-white/10 shadow-lg mt-2">
-                         <iframe
-                            src={mapsUrl}
-                            width="100%"
-                            height="100%"
-                            className="w-full h-full"
-                            style={{ border: 0 }}
-                            allowFullScreen
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"
+                         <GoogleMapsEmbed
+                            latitude={data?.latitude}
+                            longitude={data?.longitude}
                             title="Lokasi Kantor"
-                        />
+                            className="w-full h-full"
+                            fallbackClassName="!bg-transparent text-gray-300 hover:text-white"
+                         />
                     </div>
                 )}
              </div>

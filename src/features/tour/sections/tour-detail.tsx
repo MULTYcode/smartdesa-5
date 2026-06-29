@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { MapIcon, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { validateAndRedirect } from '@/lib/shouldRedirect';
+import { GoogleMapsEmbed } from '@/components/shared/GoogleMapsEmbed';
 
 export default function TourDetail() {
     const { slug } = useParams();
@@ -26,7 +27,6 @@ export default function TourDetail() {
         }
     }, [isTourEnabled, isFeaturesLoading, router]);
 
-    const gmapsApiKey = process.env.NEXT_PUBLIC_GMAPS_API_KEY;
     const isStreetAvailable = StreetViewChecker({ lat: Number(data?.latitude), lng: Number(data?.longitude) });
 
     if (isFeaturesLoading) {
@@ -101,10 +101,6 @@ export default function TourDetail() {
 
   
     if(data){
-      let mapsUrl = `https://www.google.com/maps/embed/v1/place?key=${gmapsApiKey}&q=${data?.latitude},${data?.longitude}`;
-        if (isStreetAvailable) {
-            mapsUrl = `https://www.google.com/maps/embed/v1/streetview?key=${gmapsApiKey}&location=${data?.latitude},${data?.longitude}&heading=0&pitch=0`;
-        }
   
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-8">
@@ -189,29 +185,15 @@ export default function TourDetail() {
                                     <span className="w-1 h-8 bg-gradient-to-b from-green-500 to-blue-500 rounded-full"></span>
                                     Lokasi di Peta
                                 </h2>
-                                <div className="relative w-full h-96 rounded-xl overflow-hidden">
-                                    {
-                                        !data?.latitude && !data?.longitude && !gmapsApiKey ? (
-                                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
-                                                <div className="text-center">
-                                                    <MapIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                                                    <p className="text-gray-500 dark:text-gray-400">Peta tidak tersedia</p>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <iframe
-                                                src={mapsUrl}
-                                                width="100%"
-                                                height="100%"
-                                                style={{ border: 0 }}
-                                                allowFullScreen
-                                                loading="lazy"
-                                                referrerPolicy="no-referrer-when-downgrade"
-                                                title={`Map of ${data?.title}`}
-                                                className="absolute inset-0"
-                                            />
-                                        )
-                                    }
+                                <div className="relative w-full h-96 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800">
+                                    <GoogleMapsEmbed
+                                        latitude={data?.latitude}
+                                        longitude={data?.longitude}
+                                        mode={isStreetAvailable ? "streetview" : "place"}
+                                        title={`Map of ${data?.title}`}
+                                        className="absolute inset-0 w-full h-full border-0"
+                                        fallbackClassName="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800"
+                                    />
                                 </div>
                             </div>
                         </div>
