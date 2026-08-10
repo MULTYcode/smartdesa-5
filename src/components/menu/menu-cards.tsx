@@ -62,13 +62,19 @@ function ServiceCardItem({
               {IconComponent && <IconComponent className={`${compact ? "h-4 w-4 sm:h-5 sm:w-5" : "h-5 w-5 sm:h-6 sm:w-6"} text-[#CF4647]`} />}
             </span>
           )}
-          <CardTitle className={`text-gray-900 leading-tight line-clamp-2 ${compact ? "text-sm sm:text-base" : "text-sm sm:text-base md:text-lg"}`}>
+          <CardTitle
+            title={item.title}
+            className={`text-gray-900 leading-tight line-clamp-2 ${compact ? "text-sm sm:text-base" : "text-sm sm:text-base md:text-lg"}`}
+          >
             {item.title}
           </CardTitle>
         </div>
 
         {/* Description */}
-        <CardDescription className={`text-gray-600 font-normal leading-relaxed line-clamp-2 ${compact ? "text-xs" : "text-xs sm:text-sm"}`}>
+        <CardDescription
+          title={description}
+          className={`text-gray-600 font-normal leading-relaxed line-clamp-2 ${compact ? "text-xs" : "text-xs sm:text-sm"}`}
+        >
           {description}
         </CardDescription>
       </CardHeader>
@@ -213,11 +219,11 @@ export default function MenuCards() {
                   })()
                 )}
                 <div className="min-w-0 flex-1">
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 line-clamp-1">
+                  <h3 title={selectedService.title} className="text-lg sm:text-xl font-bold text-gray-900 line-clamp-1">
                     {selectedService.title}
                   </h3>
                   {selectedService.description && (
-                    <p className="text-xs sm:text-sm text-gray-500 mt-0.5 line-clamp-2">
+                    <p title={selectedService.description} className="text-xs sm:text-sm text-gray-500 mt-0.5 line-clamp-2">
                       {selectedService.description}
                     </p>
                   )}
@@ -235,6 +241,11 @@ export default function MenuCards() {
                       item={child}
                       index={i}
                       compact
+                      onChildClick={(nestedChild) => {
+                        if (Array.isArray(nestedChild.child) && nestedChild.child.length > 0) {
+                          setSelectedService(nestedChild)
+                        }
+                      }}
                     />
                   ))}
                 </AnimatePresence>

@@ -49,8 +49,8 @@ export const PressReleaseCard: React.FC<PressReleaseCardProps> = ({
             )}
             <span className="self-center align-baseline text-xs font-medium text-black dark:text-white">{formattedDate}</span>
           </div>
-          <h5 className="my-2 leading-5 text-lg font-bold line-clamp-3 tracking-tight text-gray-900 dark:text-white">{title}</h5>
-          <p className="mb-3 font-normal text-sm line-clamp-3 leading-5 text-gray-500 lg:text-gray-800 dark:text-gray-400">{description}</p>
+          <h5 title={title} className="my-2 leading-5 text-lg font-bold line-clamp-3 tracking-tight text-gray-900 dark:text-white">{title}</h5>
+          <p title={description} className="mb-3 font-normal text-sm line-clamp-3 leading-5 text-gray-500 lg:text-gray-800 dark:text-gray-400">{description}</p>
           {author && (
             <span className="text-xs font-medium text-gray-500">
               Oleh {author}

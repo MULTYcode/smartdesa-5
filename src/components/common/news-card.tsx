@@ -102,17 +102,23 @@ export function NewsCard({ title, excerpt, date, readTime, image, slug, classNam
             </div>
 
             {/* Title */}
-            <h3 className={cn(
-              "text-sm sm:text-base md:text-lg font-bold tracking-tight text-gray-900 dark:text-white leading-tight sm:leading-snug",
-              "group-hover:text-[#CF4647] transition-colors duration-300",
-              !isDetail && "line-clamp-2"
-            )}>
+            <h3
+              title={title}
+              className={cn(
+                "text-sm sm:text-base md:text-lg font-bold tracking-tight text-gray-900 dark:text-white leading-tight sm:leading-snug",
+                "group-hover:text-[#CF4647] transition-colors duration-300",
+                !isDetail && "line-clamp-2"
+              )}
+            >
               {title}
             </h3>
 
             {/* Excerpt */}
             {excerpt && (
-              <p className="mt-2 font-normal text-xs sm:text-sm line-clamp-2 sm:line-clamp-3 leading-relaxed text-gray-500 lg:text-gray-700 dark:text-gray-400">
+              <p
+                title={excerpt}
+                className="mt-2 font-normal text-xs sm:text-sm line-clamp-2 sm:line-clamp-3 leading-relaxed text-gray-500 lg:text-gray-700 dark:text-gray-400"
+              >
                 {excerpt}
               </p>
             )}

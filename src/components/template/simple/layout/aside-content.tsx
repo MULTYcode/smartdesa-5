@@ -96,7 +96,7 @@ export default function AsideContent({
                             {article.published_at}
                           </span>
                         </div>
-                        <h5 className="text-xs sm:text-sm font-semibold text-gray-800 group-hover:text-[#CF4647] transition-colors duration-200 line-clamp-2 sm:line-clamp-3 md:line-clamp-2 leading-tight sm:leading-snug">
+                        <h5 title={article.title} className="text-xs sm:text-sm font-semibold text-gray-800 group-hover:text-[#CF4647] transition-colors duration-200 line-clamp-2 sm:line-clamp-3 md:line-clamp-2 leading-tight sm:leading-snug">
                           {article.title}
                         </h5>
                       </div>

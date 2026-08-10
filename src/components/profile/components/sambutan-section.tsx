@@ -4,11 +4,11 @@ import RichTextContent from "@/components/common/RichTextContent";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDynamicSections } from "@/hooks/useDynamicSections";
-import { Loader2 } from "lucide-react";
 
 export function SambutanSection() {
   const { sections, isLoading, isError, refetch } = useDynamicSections();
   const [activeTab, setActiveTab] = useState("");
+  const [isPaused, setIsPaused] = useState(false);
   const tabContainerRef = useRef<HTMLDivElement>(null);
 
   // Set first tab as active when sections load
@@ -18,13 +18,25 @@ export function SambutanSection() {
     }
   }, [sections, activeTab]);
 
-  // Scroll active tab into view
+  // Autoplay Carousel dengan Interval 6 Detik & Auto Pause saat hover / touch / focus
+  useEffect(() => {
+    if (sections.length <= 1 || isPaused || !activeTab) return;
+
+    const interval = setInterval(() => {
+      const currentIndex = sections.findIndex((s) => s.config.id === activeTab);
+      const nextIndex = (currentIndex + 1) % sections.length;
+      setActiveTab(sections[nextIndex].config.id);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, [sections, activeTab, isPaused]);
+
   const handleTabClick = (id: string) => {
     setActiveTab(id);
-    const btn = document.getElementById(`sambutan-tab-${id}`);
-    if (btn && tabContainerRef.current) {
-      btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-    }
+  };
+
+  const handleTouchEnd = () => {
+    setTimeout(() => setIsPaused(false), 2000);
   };
 
   // Loading
@@ -69,13 +81,23 @@ export function SambutanSection() {
     );
   }
 
-  // No sections
   if (sections.length === 0) return null;
 
   const activeSection = sections.find((s) => s.config.id === activeTab) || sections[0];
+  const rawContent = activeSection?.content?.trim() || "";
+  const cleanText = rawContent.replace(/<[^>]*>/g, "").trim();
+  const hasContent = cleanText.length > 0 || /<img|<iframe|<video/i.test(rawContent);
 
   return (
-    <section className="py-8 flex justify-center px-6 sm:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl w-full">
+    <section
+      className="py-8 flex justify-center px-6 sm:px-0 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl w-full select-none"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={handleTouchEnd}
+      onFocus={() => setIsPaused(true)}
+      onBlur={() => setIsPaused(false)}
+    >
       <div className="w-full">
         {/* ─── Tabs ─── */}
         <div
@@ -107,22 +129,27 @@ export function SambutanSection() {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeSection.config.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="w-full rounded-2xl px-5 py-6"
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="w-full rounded-2xl px-5 py-6 min-h-[300px] sm:min-h-[350px] md:min-h-[380px] flex flex-col"
             >
-              <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
-                <div className="flex-1 relative w-full">
-
+              <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center w-full flex-1">
+                <div className="flex-1 relative w-full min-h-[300px] sm:min-h-[350px] md:min-h-[380px] flex flex-col">
                   <div
-                    className="w-full min-h-[300px]"
+                    className="w-full min-h-[300px] sm:min-h-[350px] md:min-h-[380px] flex flex-col"
                     style={{ WebkitOverflowScrolling: "touch", scrollbarWidth: "none", msOverflowStyle: "none" }}
                   >
-                    <RichTextContent
-                      content={activeSection.content}
-                    />
+                    {hasContent ? (
+                      <RichTextContent
+                        content={rawContent}
+                      />
+                    ) : (
+                      <div className="w-full flex-1 flex items-center justify-center min-h-[260px] sm:min-h-[300px] text-gray-400 dark:text-gray-500 text-sm font-medium italic border border-dashed border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50/50 dark:bg-gray-800/30 p-6 text-center select-none">
+                        Informasi tidak tersedia.
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
