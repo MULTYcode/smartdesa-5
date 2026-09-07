@@ -107,3 +107,30 @@ export function debounce<T extends (...args: []) => []>(fn: T, delay = 300) {
     timeoutId = setTimeout(() => fn.apply(this, args), delay)
   }
 }
+
+/**
+ * Truncates a string by a maximum number of words with a character fallback limit.
+ *
+ * @param text - The string to truncate
+ * @param maxWords - Maximum number of words (default: 2)
+ * @param maxChars - Maximum number of characters fallback (default: 30)
+ * @param suffix - Suffix to append if truncated (default: '...')
+ * @returns Truncated string
+ */
+export function truncateWords(text: string, maxWords = 2, maxChars = 30, suffix = "...") {
+  if (!text) return "";
+  const trimmed = text.trim();
+  const words = trimmed.split(/\s+/);
+
+  let result = trimmed;
+  if (words.length > maxWords) {
+    result = words.slice(0, maxWords).join(" ") + suffix;
+  }
+
+  if (result.length > maxChars) {
+    result = result.slice(0, maxChars).trim() + suffix;
+  }
+
+  return result;
+}
+

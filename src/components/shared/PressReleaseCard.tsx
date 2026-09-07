@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import moment from 'moment'
 import 'moment/locale/id';
+import { truncateWords } from '@/lib/utils';
 
 interface PressReleaseCardProps {
   id: number
@@ -40,14 +41,16 @@ export const PressReleaseCard: React.FC<PressReleaseCardProps> = ({
           />
         </div>
         <div className="p-1 pe-6">
-          <div className='flex flex-row col-span-8 my-2 gap-1 justify-items-start items-start'>
+          <div className='flex flex-wrap items-center my-2 gap-x-2 gap-y-1 min-w-0'>
             {category && (
               <>
-                <span className="self-center align-baseline text-base font-semibold uppercase text-[#929AAB]">{category}</span>
-                <div className="self-center w-px h-4 bg-gray-400"></div>
+                <span className="self-center align-baseline text-sm font-semibold uppercase text-[#929AAB] shrink-0" title={category}>
+                  {truncateWords(category, 2)}
+                </span>
+                <div className="self-center w-px h-3.5 bg-gray-400 shrink-0"></div>
               </>
             )}
-            <span className="self-center align-baseline text-xs font-medium text-black dark:text-white">{formattedDate}</span>
+            <span className="self-center align-baseline text-xs font-medium text-black dark:text-white shrink-0">{formattedDate}</span>
           </div>
           <h5 title={title} className="my-2 leading-5 text-lg font-bold line-clamp-3 tracking-tight text-gray-900 dark:text-white">{title}</h5>
           <p title={description} className="mb-3 font-normal text-sm line-clamp-3 leading-5 text-gray-500 lg:text-gray-800 dark:text-gray-400">{description}</p>

@@ -6,6 +6,7 @@ import Image from "next/image";
 import SliderCard from "@/components/infografis/sliderInfografis";
 import Link from "next/link";
 import Refetch from "@/components/shared/refetch";
+import { truncateWords } from "@/lib/utils";
 
 export default function AsideContent({
   children,
@@ -69,40 +70,46 @@ export default function AsideContent({
                   <Refetch refetch={refetch} />
                 </div>
               ) : (
-                articles?.pages[0].data.map((article) => (
-                  <Link key={article.id} href={`/article/${article.slug}`}>
-                    <li className="flex gap-2 sm:gap-3 items-start group mb-2">
-                      {/* Thumbnail */}
-                      <div className="flex-shrink-0 w-20 sm:w-24 md:w-20 lg:w-24 relative">
-                        <div className="aspect-[16/10] relative overflow-hidden rounded-sm shadow-sm">
-                          <Image
-                            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-                            src={article.thumbnail || ""}
-                            alt="Article Thumbnail"
-                            fill
-                            sizes="(max-width: 640px) 80px, (max-width: 768px) 96px, (max-width: 1024px) 80px, 96px"
-                            priority
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out" />
+                articles?.pages[0].data.map((article) => {
+                  const rawCategory = article.category?.name || "Berita";
+                  const categoryText = truncateWords(rawCategory, 2);
+
+                  return (
+                    <Link key={article.id} href={`/article/${article.slug}`}>
+                      <li className="flex gap-2 sm:gap-3 items-center group mb-2 p-1 rounded-lg hover:bg-gray-50/80 transition-colors">
+                        {/* Thumbnail */}
+                        <div className="flex-shrink-0 w-20 h-16 sm:w-24 sm:h-20 md:w-20 md:h-16 lg:w-24 lg:h-20 relative">
+                          <div className="relative w-full h-full overflow-hidden rounded-sm shadow-sm">
+                            <Image
+                              className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                              src={article.thumbnail || ""}
+                              alt={article.title}
+                              fill
+                              sizes="(max-width: 640px) 80px, (max-width: 768px) 96px, (max-width: 1024px) 80px, 96px"
+                              priority
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out" />
+                          </div>
                         </div>
-                      </div>
-                      {/* Article Info */}
-                      <div className="flex-1 min-w-0 flex flex-col justify-start">
-                        <div className="flex flex-wrap gap-x-2 gap-y-0.5 mb-1">
-                          <span className="text-xs sm:text-sm text-[#CF4647] font-medium">
-                            {article.category.name}
-                          </span>
-                          <span className="text-xs text-gray-400">
-                            {article.published_at}
-                          </span>
+                        {/* Article Info */}
+                        <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
+                          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0">
+                            <span className="text-xs sm:text-sm text-[#CF4647] font-medium shrink-0" title={rawCategory}>
+                              {categoryText}
+                            </span>
+                            <span className="text-xs text-gray-300 select-none shrink-0">•</span>
+                            <span className="text-xs text-gray-400 shrink-0">
+                              {article.published_at}
+                            </span>
+                          </div>
+                          <h5 title={article.title} className="text-xs sm:text-sm font-semibold text-gray-800 group-hover:text-[#CF4647] transition-colors duration-200 line-clamp-2 leading-tight sm:leading-snug">
+                            {article.title}
+                          </h5>
                         </div>
-                        <h5 title={article.title} className="text-xs sm:text-sm font-semibold text-gray-800 group-hover:text-[#CF4647] transition-colors duration-200 line-clamp-2 sm:line-clamp-3 md:line-clamp-2 leading-tight sm:leading-snug">
-                          {article.title}
-                        </h5>
-                      </div>
-                    </li>
-                  </Link>
-                ))
+                      </li>
+                    </Link>
+                  );
+                })
               )}
             </ul>
           </div>

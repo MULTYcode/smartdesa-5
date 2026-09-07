@@ -1,7 +1,7 @@
 import { Calendar, Clock, Tag, User } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { cn } from "@/lib/utils"
+import { cn, truncateWords } from "@/lib/utils"
 import { CustomCard } from "@/components/ui/simple/CustomCard"
 
 export interface NewsCardProps {
@@ -61,9 +61,9 @@ export function NewsCard({ title, excerpt, date, readTime, image, slug, classNam
             {/* Category Badge */}
             {category && (
               <div className="absolute top-2 left-2 sm:top-3 sm:left-3">
-                <span className="inline-flex items-center px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium bg-white/90 backdrop-blur-sm text-[#CF4647] shadow-sm">
-                  <Tag className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-0.5 sm:mr-1" />
-                  {category}
+                <span className="inline-flex items-center px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium bg-white/90 backdrop-blur-sm text-[#CF4647] shadow-sm max-w-[140px] truncate" title={category}>
+                  <Tag className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-0.5 sm:mr-1 shrink-0" />
+                  <span className="truncate">{truncateWords(category, 2)}</span>
                 </span>
               </div>
             )}
@@ -87,7 +87,7 @@ export function NewsCard({ title, excerpt, date, readTime, image, slug, classNam
               {author && (
                 <div className="flex items-center">
                   <User className="w-3 h-3 sm:w-4 sm:h-4 mr-0.5 sm:mr-1" />
-                  <span className="font-medium truncate max-w-[100px] sm:max-w-[150px]">{author}</span>
+                  <span className="font-medium truncate max-w-[100px] sm:max-w-[150px]" title={author}>{author}</span>
                 </div>
               )}
               {readTime && (

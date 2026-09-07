@@ -95,6 +95,7 @@ export function MobileSidebar({ menuData, isOpen, setIsOpen }: MobileSidebarProp
                 {!menu.child || menu.child.length === 0 ? (
                   <Link
                     href={menu.route || "/"}
+                    title={menu.title}
                     className={classNames(
                       "block py-2 px-3 w-full font-semibold rounded-md transition-all duration-200",
                       pathname === menu.route ? "bg-gray-100 text-black" : "text-black hover:bg-gray-50",
@@ -107,6 +108,7 @@ export function MobileSidebar({ menuData, isOpen, setIsOpen }: MobileSidebarProp
                     {({ open }) => (
                       <>
                         <DisclosureButton
+                          title={menu.title}
                           className={classNames(
                             "flex justify-between text-start items-center w-full py-2 px-3 font-semibold rounded-md transition-all duration-200",
                             pathname.startsWith(menu.route || "")
@@ -114,7 +116,7 @@ export function MobileSidebar({ menuData, isOpen, setIsOpen }: MobileSidebarProp
                               : "text-black hover:bg-gray-50",
                           )}
                         >
-                          <span>{menu.title}</span>
+                          <span title={menu.title}>{menu.title}</span>
                           <svg
                             className={classNames(
                               "min-w-2 min-h-2 w-2 h-2 transition-transform duration-300",
@@ -150,6 +152,7 @@ export function MobileSidebar({ menuData, isOpen, setIsOpen }: MobileSidebarProp
                                     {!submenu.child || submenu.child.length === 0 ? ( 
                                         <Link
                                             href={fullPath}
+                                            title={submenu.title}
                                             className={classNames(
                                             "block rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200",
                                             pathname === fullPath
@@ -196,8 +199,9 @@ function NestedSubmenu({ submenu, parentPath, level }: NestedSubmenuProps) {
       {({ open }) => (
         <>
             {submenu.staticPage !== null ? (
-                <Link href={parentPath}>
+                <Link href={parentPath} title={submenu.title}>
                     <DisclosureButton
+                        title={submenu.title}
                         className={classNames(
                         "flex justify-between text-start items-center w-full py-1.5 px-3 text-sm font-medium rounded-md transition-all duration-200",
                         "ml-2", 
@@ -206,7 +210,7 @@ function NestedSubmenu({ submenu, parentPath, level }: NestedSubmenuProps) {
                             : "text-gray-700 hover:bg-gray-50 hover:text-black",
                         )}
                     >
-                        <span>{submenu.title}</span>
+                        <span title={submenu.title}>{submenu.title}</span>
                         <svg
                         className={classNames("min-w-2 min-h-2 w-2 h-2 transition-transform duration-300", open ? "rotate-180" : "rotate-0")}
                         aria-hidden="true"
@@ -226,6 +230,7 @@ function NestedSubmenu({ submenu, parentPath, level }: NestedSubmenuProps) {
                 </Link>
             ) : (
                 <DisclosureButton
+                    title={submenu.title}
                     className={classNames(
                     "flex justify-between text-start items-center w-full py-1.5 px-3 text-sm font-medium rounded-md transition-all duration-200",
                     pathname.startsWith(parentPath)
@@ -233,7 +238,7 @@ function NestedSubmenu({ submenu, parentPath, level }: NestedSubmenuProps) {
                         : "text-gray-700 hover:bg-gray-50 hover:text-black",
                     )}
                 >
-                    <span>{submenu.title}</span>
+                    <span title={submenu.title}>{submenu.title}</span>
                     <svg
                     className={classNames("min-w-2 min-h-2 w-2 h-2 transition-transform duration-300", open ? "rotate-180" : "rotate-0")}
                     aria-hidden="true"
@@ -266,6 +271,7 @@ function NestedSubmenu({ submenu, parentPath, level }: NestedSubmenuProps) {
                         {childItem.staticPage !== null && !childItem.child && (
                         <Link
                             href={fullChildPath}
+                            title={childItem.title}
                             className={classNames(
                             "block rounded-md px-3 py-1.5 text-xs font-medium transition-colors duration-200",
                             pathname === fullChildPath
