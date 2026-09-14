@@ -1,11 +1,12 @@
 // import { useNavigation } from '@/hooks/useNavigation'
 import useSetting from '@/hooks/useSettings';
-import { FaFacebook, FaInstagram, FaXTwitter, FaLinkedin, FaThreads, FaTiktok, FaYoutube, FaQuestion } from "react-icons/fa6";
 import React from 'react'
+import { FaFacebook, FaInstagram, FaXTwitter, FaLinkedin, FaThreads, FaTiktok, FaYoutube, FaQuestion } from "react-icons/fa6";
+import { getEnv } from '@/lib/get-runtime-env';
 
 export default function Sosmed() {
 
-    const { data: setting } = useSetting(`footer-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
+    const { data: setting } = useSetting(`footer-${getEnv('NEXT_PUBLIC_VILLAGE_ID')}`, {});
 
     const renderSocialIcon = (platform: string) => {
         switch (platform.toLowerCase()) {

@@ -3,6 +3,7 @@ import { Facebook, Instagram, Mail, Map, MapPin, Phone, Twitter, Youtube } from 
 import { NavItem, NavLayanan } from "@/types/Simple";
 import FooterSkeleton from "../../../common/skeleton/footerSkeleton";
 import StreetViewChecker from '@/lib/checkStreetView';
+import { getEnv } from '@/lib/get-runtime-env';
 
 interface FooterProps {
   data?: {
@@ -25,7 +26,7 @@ export function Footer({ data }: FooterProps) {
 
   if(!data) return <FooterSkeleton />
 
-  const gmapsApiKey = process.env.NEXT_PUBLIC_GMAPS_API_KEY;
+  const gmapsApiKey = getEnv('NEXT_PUBLIC_GMAPS_API_KEY');
   const isStreetAvailable = StreetViewChecker({ lat: Number(data?.latitude), lng: Number(data?.longitude) });
 
   let mapsUrl = `https://www.google.com/maps/embed/v1/place?key=${gmapsApiKey}&q=${data?.latitude},${data?.longitude}`;

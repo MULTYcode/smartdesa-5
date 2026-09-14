@@ -1,11 +1,12 @@
 // import { useNavigation } from '@/hooks/useNavigation'
 import useSetting from '@/hooks/useSettings';
+import { getEnv } from '@/lib/get-runtime-env';
 import { Facebook, Instagram, Twitter, Youtube } from 'lucide-react'
 import React from 'react'
 
 export default function Sosmed() {
 
-    const { data: setting } = useSetting(`footer-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
+    const { data: setting } = useSetting(`footer-${getEnv('NEXT_PUBLIC_VILLAGE_ID')}`, {});
 
     const renderSocialIcon = (platform: string) => {
         switch (platform) {

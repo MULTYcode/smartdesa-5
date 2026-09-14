@@ -7,6 +7,7 @@ import { formatMetadata } from "@/lib/generate-seo";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { validateAndRedirect } from "@/lib/shouldRedirect";
+import { getEnv } from "@/lib/get-runtime-env";
 
 function findMenuItemByPath(
   items: MenuWithContent,
@@ -43,11 +44,11 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const unwrappedParams = await params;
   const { data: menu } = await SettingService.getSetting(
-    `menu-${process.env.NEXT_PUBLIC_VILLAGE_ID}`,
+    `menu-${getEnv('NEXT_PUBLIC_VILLAGE_ID')}`,
     {}
   );
   const logoResponse = await SettingService.getSetting(
-    `logo-${process.env.NEXT_PUBLIC_VILLAGE_ID}`
+    `logo-${getEnv('NEXT_PUBLIC_VILLAGE_ID')}`
   );
   const path = Array.isArray(unwrappedParams.slug) ? unwrappedParams.slug : [];
   const menuItem = Array.isArray(menu?.value)
@@ -85,7 +86,7 @@ export default async function DynamicPage({
     : [];
   try {
     const { data: menu } = await SettingService.getSetting(
-      `menu-${process.env.NEXT_PUBLIC_VILLAGE_ID}`,
+      `menu-${getEnv('NEXT_PUBLIC_VILLAGE_ID')}`,
       {}
     );
     const menuItem = Array.isArray(menu?.value)

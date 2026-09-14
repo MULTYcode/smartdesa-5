@@ -8,6 +8,7 @@ declare global {
 }
 
 import useGmapsSettings from "@/hooks/useGmapsSettings";
+import { getEnv } from "@/lib/get-runtime-env";
 
 const StreetViewChecker = ({ lat, lng }: { lat: number; lng: number }) => {
   const { gmapsApiKey } = useGmapsSettings();
@@ -15,7 +16,7 @@ const StreetViewChecker = ({ lat, lng }: { lat: number; lng: number }) => {
 
   useEffect(() => {
     // If no API key is available, skip the check entirely
-    const resolvedKey = gmapsApiKey || process.env.NEXT_PUBLIC_GMAPS_API_KEY;
+    const resolvedKey = gmapsApiKey || getEnv('NEXT_PUBLIC_GMAPS_API_KEY');
     if (!resolvedKey) {
       setIsAvailable(false);
       return;

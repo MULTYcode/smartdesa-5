@@ -7,6 +7,7 @@ import useSetting from "@/hooks/useSettings";
 import { useRouter } from "next/navigation";
 import useFeatureFlags from "@/hooks/useFeatureFlags";
 import { TourCard } from "@/components/common/tour-card";
+import { getEnv } from "@/lib/get-runtime-env";
 
 export default function Home() {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function Home() {
     isFetching: isSettingFetching,
     refetch: refetchSetting,
     isError: isSettingError,
-  } = useSetting(`tour-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
+  } = useSetting(`tour-${getEnv('NEXT_PUBLIC_VILLAGE_ID')}`, {});
 
   const {
     data,

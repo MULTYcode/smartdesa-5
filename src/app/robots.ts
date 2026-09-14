@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
+import { getEnv } from "@/lib/get-runtime-env";
 
-const domainUrl = process.env.NEXT_PUBLIC_DOMAIN_URL
+const domainUrl = getEnv('NEXT_PUBLIC_DOMAIN_URL')
 
 export default function robots(): MetadataRoute.Robots {
   return {

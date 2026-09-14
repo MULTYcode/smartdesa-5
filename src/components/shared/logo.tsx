@@ -3,9 +3,10 @@ import Link from "next/link";
 import Image from "next/image";
 import useSetting from "@/hooks/useSettings";
 import Refetch from "./refetch";
+import { getEnv } from "@/lib/get-runtime-env";
 
 export default function Logo({isDark}: { isDark?: boolean }) {
-  const { data: logo, isLoading, refetch, isFetching, isError } = useSetting(`logo-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
+  const { data: logo, isLoading, refetch, isFetching, isError } = useSetting(`logo-${getEnv('NEXT_PUBLIC_VILLAGE_ID')}`, {});
   
   return ( 
     <>

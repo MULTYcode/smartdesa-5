@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useSetting from "./useSettings";
 import SettingService from "@/shared/services/setting.service";
+import { getEnv } from "@/lib/get-runtime-env";
 
 export interface DynamicSectionConfig {
     id: string;
@@ -25,14 +26,14 @@ const DEFAULT_SECTIONS: DynamicSectionConfig[] = [
     {
         id: "welcome",
         title: "Kata Sambutan",
-        slug: `wellcome-message-${process.env.NEXT_PUBLIC_VILLAGE_ID}`,
+        slug: `wellcome-message-${getEnv('NEXT_PUBLIC_VILLAGE_ID')}`,
         order: 1,
         enabled: true,
     },
     {
         id: "program",
         title: "Program",
-        slug: `village-program-${process.env.NEXT_PUBLIC_VILLAGE_ID}`,
+        slug: `village-program-${getEnv('NEXT_PUBLIC_VILLAGE_ID')}`,
         order: 2,
         enabled: true,
     },
@@ -68,7 +69,7 @@ async function fetchAllSectionsContent(
 }
 
 export function useDynamicSections() {
-    const villageId = process.env.NEXT_PUBLIC_VILLAGE_ID;
+    const villageId = getEnv('NEXT_PUBLIC_VILLAGE_ID');
 
     const { data: settingData, isLoading: isSettingLoading } = useSetting(
         `dynamic-sections-${villageId}`,

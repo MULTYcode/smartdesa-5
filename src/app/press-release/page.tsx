@@ -10,6 +10,7 @@ import useFeatureFlags from '@/hooks/useFeatureFlags'
 import useSetting from '@/hooks/useSettings'
 import { BiPlus } from 'react-icons/bi'
 import { Search } from 'lucide-react'
+import { getEnv } from "@/lib/get-runtime-env";
 
 export default function PressReleaseListPage() {
   const router = useRouter();
@@ -26,7 +27,7 @@ export default function PressReleaseListPage() {
     sortBy: 'publishedAt',
   }, categoryId)
 
-  const { data: setting } = useSetting(`press-release-${process.env.NEXT_PUBLIC_VILLAGE_ID}`, {});
+  const { data: setting } = useSetting(`press-release-${getEnv('NEXT_PUBLIC_VILLAGE_ID')}`, {});
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
